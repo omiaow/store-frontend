@@ -1,0 +1,436 @@
+/* Mobile-first shop creation page */
+
+.shop-create-root {
+  min-height: 100vh;
+  background: #0b0f19;
+  color: #e8eefc;
+  /* global css locks body scroll; keep scroll inside this page */
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Desktop blocker (mobile-only UI) */
+.shop-create-desktopBlock {
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.shop-create-desktopCard {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+/* Mobile UI container */
+.shop-create-mobile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.shop-create-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 16px 16px 12px 16px;
+  background: linear-gradient(180deg, rgba(11, 15, 25, 0.98), rgba(11, 15, 25, 0.75));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.shop-create-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.shop-create-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(232, 238, 252, 0.7);
+}
+
+.shop-create-content {
+  padding: 14px 16px 88px 16px;
+}
+
+.shop-create-section {
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.shop-create-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.shop-create-help {
+  font-size: 12px;
+  color: rgba(232, 238, 252, 0.65);
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+.shop-create-input {
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.25);
+  color: #e8eefc;
+  outline: none;
+}
+
+.shop-create-input::placeholder {
+  color: rgba(232, 238, 252, 0.45);
+}
+
+.shop-create-logoPreviewWrap {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.shop-create-logoPreview {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  display: block;
+}
+
+.shop-create-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.shop-create-coords {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.shop-create-coord {
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shop-create-coordLabel {
+  font-size: 12px;
+  color: rgba(232, 238, 252, 0.60);
+}
+
+.shop-create-coordValue {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.shop-create-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.shop-create-scheduleRow {
+  display: grid;
+  grid-template-columns: 110px 1fr 20px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-create-scheduleRowDisabled {
+  opacity: 0.45;
+  filter: saturate(0.7);
+}
+
+.shop-create-dayPick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+.shop-create-dayCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #3a6df0;
+}
+
+.shop-create-dayText {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.shop-create-dayNum {
+  font-weight: 600;
+  color: rgba(232, 238, 252, 0.55);
+  font-size: 12px;
+}
+
+.shop-create-timeButton {
+  width: 100%;
+  font-size: 15px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.25);
+  color: #e8eefc;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.shop-create-timeButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.shop-create-timeDash {
+  text-align: center;
+  color: rgba(232, 238, 252, 0.55);
+}
+
+/* Centered modal for hour picking */
+.shop-create-modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.shop-create-modalCard {
+  width: 250px;
+  max-height: 40vh;
+  background: #0b0f19;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.shop-create-modalHeader {
+  padding: 12px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.shop-create-modalTitle {
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.shop-create-modalClose {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8eefc;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.shop-create-modalList {
+  padding: 10px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.shop-create-modalItem {
+  width: 100%;
+  text-align: center;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.18);
+  color: #e8eefc;
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.shop-create-modalItemSelected {
+  border-color: rgba(58, 109, 240, 0.65);
+  background: rgba(58, 109, 240, 0.16);
+}
+
+.shop-create-pre {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  overflow: auto;
+  max-height: 220px;
+  color: rgba(232, 238, 252, 0.85);
+}
+
+.shop-create-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(11, 15, 25, 0.0), rgba(11, 15, 25, 0.92));
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.shop-create-buttonPrimary {
+  width: 100%;
+  padding: 14px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: #3a6df0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.shop-create-buttonPrimary:disabled {
+  opacity: 0.55;
+}
+
+.shop-create-buttonSecondary {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8eefc;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Map overlay (almost full screen) */
+.shop-create-mapOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0b0f19;
+  display: grid;
+  /* no top header; map + bottom bar */
+  grid-template-rows: 1fr auto;
+}
+
+.shop-create-mapWrap {
+  position: relative;
+}
+
+.shop-create-map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.shop-create-mapHint {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(232, 238, 252, 0.9);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.shop-create-mapControls {
+  position: absolute;
+  inset: 0;
+  z-index: 3000; /* above Leaflet panes/tiles */
+  pointer-events: none; /* only buttons should capture taps */
+}
+
+.shop-create-mapFab {
+  position: absolute;
+  z-index: 3001;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(11, 15, 25, 0.72);
+  backdrop-filter: blur(10px);
+  color: #e8eefc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.shop-create-mapFabBack {
+  top: 12px;
+  left: 12px;
+}
+
+.shop-create-mapFabMyLoc {
+  right: 12px;
+  top: 70%;
+  transform: translateY(-50%);
+}
+
+.shop-create-mapBottom {
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(11, 15, 25, 0.98);
+  display: grid;
+  grid-template-rows: 18px 1fr;
+  gap: 10px;
+}
+
+.shop-create-mapCoords {
+  font-size: 12px;
+  color: rgba(232, 238, 252, 0.75);
+}
+
+/* Mobile-only behavior */
+@media (min-width: 769px) {
+  .shop-create-mobile {
+    display: none;
+  }
+  .shop-create-desktopBlock {
+    display: flex;
+  }
+}
+
