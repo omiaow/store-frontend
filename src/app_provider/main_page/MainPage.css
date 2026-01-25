@@ -2,6 +2,7 @@
   min-height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  background: #f5f5f5;
   color: #0b0f19;
 }
 
@@ -23,8 +24,8 @@
   padding: 16px 16px 12px 16px;
   background: linear-gradient(
     180deg,
-    rgba(202, 213, 226, 0.98),
-    rgba(202, 213, 226, 0.75)
+    rgba(245, 245, 245, 0.98),
+    rgba(245, 245, 245, 0.75)
   );
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(15, 23, 42, 0.10);
@@ -70,7 +71,7 @@
   padding: 12px 14px;
   border-radius: 16px;
   border: 1px solid rgba(15, 23, 42, 0.14);
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.80);
   cursor: pointer;
   text-align: left;
 }
@@ -134,14 +135,14 @@
 .main-page-statCard {
   padding: 14px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .main-page-statTitle {
   font-size: 12px;
   font-weight: 800;
-  color: rgba(15, 23, 42, 0.60);
+  color: rgba(15, 23, 42, 0.55);
 }
 
 .main-page-statValue {
@@ -156,7 +157,7 @@
   padding: 14px;
   border-radius: 16px;
   border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .main-page-sectionHeader {
@@ -189,7 +190,7 @@
   padding: 14px 12px;
   border-radius: 14px;
   border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(15, 23, 42, 0.03);
   font-size: 13px;
   color: rgba(15, 23, 42, 0.60);
 }
@@ -202,7 +203,7 @@
   padding: 12px 12px;
   border-radius: 14px;
   border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.90);
 }
 
 .main-page-productImage {
@@ -211,7 +212,7 @@
   border-radius: 12px;
   object-fit: cover;
   border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.50);
+  background: rgba(255, 255, 255, 0.06);
   flex: 0 0 auto;
 }
 
@@ -253,7 +254,7 @@
   padding: 0;
   border-radius: 12px;
   border: 1px solid rgba(15, 23, 42, 0.14);
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.85);
   color: rgba(15, 23, 42, 0.90);
   cursor: pointer;
   display: inline-flex;
@@ -273,7 +274,7 @@
 }
 
 .main-page-iconButton:hover {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .main-page-iconButton:active {
@@ -307,8 +308,8 @@
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
   background: linear-gradient(
     180deg,
-    rgba(202, 213, 226, 0),
-    rgba(202, 213, 226, 0.94)
+    rgba(245, 245, 245, 0.0),
+    rgba(245, 245, 245, 0.92)
   );
   border-top: 1px solid rgba(15, 23, 42, 0.10);
 }
@@ -340,9 +341,9 @@
 .main-page-modalCard {
   width: min(420px, 100%);
   max-height: 70vh;
-  background: #0b0f19;
-  color: #e8eefc;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #ffffff;
+  color: #0b0f19;
+  border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 18px;
   overflow: hidden;
   display: flex;
@@ -356,8 +357,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(15, 23, 42, 0.03);
 }
 
 .main-page-modalTitle {
@@ -370,7 +371,7 @@
   margin-top: 4px;
   font-weight: 700;
   font-size: 12px;
-  color: rgba(232, 238, 252, 0.70);
+  color: rgba(15, 23, 42, 0.55);
 }
 
 .main-page-modalClose {
@@ -378,9 +379,9 @@
   width: 34px;
   padding: 0;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: #e8eefc;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(15, 23, 42, 0.90);
   font-weight: 900;
   font-size: 13px;
   cursor: pointer;
@@ -400,9 +401,9 @@
   text-align: left;
   padding: 12px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(0, 0, 0, 0.18);
-  color: #e8eefc;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.90);
+  color: rgba(15, 23, 42, 0.90);
   font-weight: 900;
   font-size: 15px;
   margin-bottom: 10px;
@@ -417,7 +418,7 @@
 .main-page-modalEmpty {
   padding: 10px 6px 2px 6px;
   font-size: 12px;
-  color: rgba(232, 238, 252, 0.65);
+  color: rgba(15, 23, 42, 0.55);
 }
 
 .main-page-editBody {
@@ -433,8 +434,8 @@
   padding: 10px 10px;
   border-radius: 14px;
   border: 1px solid rgba(239, 68, 68, 0.35);
-  background: rgba(239, 68, 68, 0.10);
-  color: rgba(254, 226, 226, 0.95);
+  background: rgba(239, 68, 68, 0.08);
+  color: rgba(127, 29, 29, 0.95);
   font-size: 12px;
   font-weight: 700;
 }
@@ -445,7 +446,7 @@
   gap: 6px;
   font-size: 12px;
   font-weight: 800;
-  color: rgba(232, 238, 252, 0.75);
+  color: rgba(15, 23, 42, 0.70);
 }
 
 .main-page-editInput {
@@ -453,14 +454,14 @@
   font-size: 15px;
   padding: 12px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(0, 0, 0, 0.25);
-  color: #e8eefc;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(11, 15, 25, 0.95);
   outline: none;
 }
 
 .main-page-editInput::placeholder {
-  color: rgba(232, 238, 252, 0.45);
+  color: rgba(15, 23, 42, 0.45);
 }
 
 .main-page-editActions {
@@ -473,15 +474,15 @@
 .main-page-editButton {
   height: 40px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(15, 23, 42, 0.14);
   font-size: 14px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .main-page-editButtonSecondary {
-  background: rgba(255, 255, 255, 0.06);
-  color: #e8eefc;
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(15, 23, 42, 0.90);
 }
 
 .main-page-editButtonPrimary {
@@ -491,14 +492,14 @@
 }
 
 .main-page-editButtonDanger {
-  background: rgba(239, 68, 68, 0.20);
-  border-color: rgba(239, 68, 68, 0.40);
-  color: rgba(254, 226, 226, 0.98);
+  background: rgba(239, 68, 68, 0.10);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: rgba(127, 29, 29, 0.95);
 }
 
 .main-page-confirmText {
   font-size: 13px;
-  color: rgba(232, 238, 252, 0.85);
+  color: rgba(15, 23, 42, 0.80);
   line-height: 1.35;
 }
 
