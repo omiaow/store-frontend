@@ -15,7 +15,7 @@ function CustomerSide() {
   const [fabVisible, setFabVisible] = useState(false)
   const [fabPosition, setFabPosition] = useState(null)
   const [products, setProducts] = useState([])
-  const [branches, setBranches] = useState([])
+  // const [branches, setBranches] = useState([])
   const [storeData, setStoreData] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -65,7 +65,7 @@ function CustomerSide() {
         }))
 
         setStoreData(data.shop)
-        setBranches(data.branches)
+        // setBranches(data.branches)
         setProducts(mappedProducts)
       } catch (err) {
         setError('Failed to fetch store data: ' + err.message)
