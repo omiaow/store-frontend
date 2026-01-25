@@ -2,11 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import './FloatingActionButton.css'
 
 function FloatingActionButton({ count, isVisible, initialPosition, onClick }) {
-  const isMobile = () => {
+  const isMobile = useCallback(() => {
     return typeof window !== 'undefined' && window.innerWidth <= 768
-  }
+  }, [])
   
-  const getDefaultPosition = () => {
+  const getDefaultPosition = useCallback(() => {
     if (typeof window === 'undefined') {
       return { x: 100, y: 100 }
     }
@@ -16,7 +16,7 @@ function FloatingActionButton({ count, isVisible, initialPosition, onClick }) {
     const x = isMobile() ? 50 : window.innerWidth - 100
     
     return { x, y }
-  }
+  }, [isMobile])
   
   const [position, setPosition] = useState(initialPosition || getDefaultPosition())
   const [isDragging, setIsDragging] = useState(false)
@@ -42,7 +42,7 @@ function FloatingActionButton({ count, isVisible, initialPosition, onClick }) {
       // If FAB is visible but no initial position, use default
       setPosition(getDefaultPosition())
     }
-  }, [initialPosition, isVisible])
+  }, [initialPosition, isVisible, getDefaultPosition])
 
   // Prevent background scroll when dragging
   useEffect(() => {
