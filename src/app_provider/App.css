@@ -33,4 +33,11 @@ body {
   overscroll-behavior: contain;
 }
 
+.app-spinnerWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
 

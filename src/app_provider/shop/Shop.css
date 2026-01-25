@@ -48,6 +48,36 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.shop-create-headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shop-create-headerText {
+  min-width: 0;
+}
+
+.shop-create-headerBack {
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8eefc;
+  font-weight: 900;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.shop-create-headerBack:active {
+  transform: translateY(0.5px);
+}
+
 .shop-create-title {
   font-size: 20px;
   font-weight: 700;
@@ -86,6 +116,28 @@
   margin-bottom: 10px;
 }
 
+.shop-create-helpTight {
+  margin-top: 0;
+}
+
+.shop-create-helpStoreSettings {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.shop-create-sectionError {
+  border-color: rgba(255, 107, 107, 0.55);
+  background: rgba(255, 107, 107, 0.06);
+}
+
+.shop-create-rowGrow {
+  min-width: 0;
+}
+
+.shop-create-labelNoMargin {
+  margin-bottom: 0;
+}
+
 .shop-create-input {
   width: 100%;
   font-size: 16px;
@@ -116,6 +168,10 @@
   border: 1px solid rgba(255, 255, 255, 0.10);
   background: rgba(255, 255, 255, 0.06);
   display: block;
+}
+
+.shop-create-logoPreviewHidden {
+  display: none;
 }
 
 .shop-create-row {

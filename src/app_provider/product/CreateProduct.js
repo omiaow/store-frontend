@@ -60,19 +60,14 @@ function CreateProduct({ onCreated }) {
                 <CreateShopHeader
                     title="Create product"
                     subtitle="Add product name, image and price"
+                    onBack={() => navigate('/provider/branch/store')}
                 />
 
                 <main className="shop-create-content">
                     {error ? (
-                        <section
-                            className="shop-create-section"
-                            style={{
-                                borderColor: 'rgba(255, 107, 107, 0.55)',
-                                background: 'rgba(255, 107, 107, 0.06)',
-                            }}
-                        >
+                        <section className="shop-create-section shop-create-sectionError">
                             <div className="shop-create-label">Error</div>
-                            <div className="shop-create-help" style={{ marginTop: 0 }}>
+                            <div className="shop-create-help shop-create-helpTight">
                                 {error}
                             </div>
                         </section>

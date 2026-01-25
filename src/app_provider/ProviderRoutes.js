@@ -10,7 +10,8 @@ import UpdateShop from './shop/UpdateShop';
 export default function ProviderRoutes() {
     return (
         <Routes>
-            <Route index element={<Navigate to="branch/store" replace />} />
+            <Route index element={<Navigate to="/provider/branch/store" replace />} />
+            <Route path="branch" element={<Navigate to="/provider/branch/store" replace />} />
             <Route path="branch/:branchId" element={<MainPage />} />
 
             <Route path="shop/create" element={<CreateShop />} />
@@ -22,7 +23,7 @@ export default function ProviderRoutes() {
             <Route path="product/create" element={<CreateProduct />} />
 
             {/* fallback */}
-            <Route path="*" element={<Navigate to="branch/store" replace />} />
+            <Route path="*" element={<Navigate to="/provider/branch/store" replace />} />
         </Routes>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function ProductDetailsForm({
     name,
@@ -8,6 +8,12 @@ export default function ProductDetailsForm({
     price,
     onPriceChange,
 }) {
+    const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+
+    useEffect(() => {
+        setIsPreviewVisible(true);
+    }, [imageUrl]);
+
     return (
         <>
             <section className="shop-create-section">
@@ -40,14 +46,18 @@ export default function ProductDetailsForm({
                 {imageUrl.trim() ? (
                     <div className="shop-create-logoPreviewWrap">
                         <img
-                            className="shop-create-logoPreview"
+                            className={
+                                isPreviewVisible
+                                    ? 'shop-create-logoPreview'
+                                    : 'shop-create-logoPreview shop-create-logoPreviewHidden'
+                            }
                             src={imageUrl}
                             alt="product preview"
                             onError={(e) => {
-                                e.currentTarget.style.display = 'none';
+                                setIsPreviewVisible(false);
                             }}
                             onLoad={(e) => {
-                                e.currentTarget.style.display = 'block';
+                                setIsPreviewVisible(true);
                             }}
                         />
                     </div>

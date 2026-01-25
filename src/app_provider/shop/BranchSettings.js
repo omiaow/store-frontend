@@ -148,17 +148,18 @@ function BranchSettings({ mode = 'edit' }) {
                             ? 'Set branch name, location and schedule'
                             : 'Set Telegram channel, location and schedule'
                     }
+                    onBack={() => navigate('/provider/branch/store')}
                 />
 
                 <main className="shop-create-content">
                     {!isCreateMode ? (
                         <section className="shop-create-section">
                             <div className="shop-create-row">
-                                <div style={{ minWidth: 0 }}>
-                                    <div className="shop-create-label" style={{ marginBottom: 0 }}>
+                                <div className="shop-create-rowGrow">
+                                    <div className="shop-create-label shop-create-labelNoMargin">
                                         Store settings
                                     </div>
-                                    <div className="shop-create-help" style={{ marginTop: 6, marginBottom: 0 }}>
+                                    <div className="shop-create-help shop-create-helpStoreSettings">
                                         Update shop name, logo and custom name
                                     </div>
                                 </div>
