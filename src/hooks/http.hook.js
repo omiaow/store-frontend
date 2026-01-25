@@ -13,6 +13,8 @@ const useHttp = () => {
     async (url, method = "GET", body = null, headers = {}) => {
       setLoading(true);
       try {
+        const baseUrl = process.env.REACT_APP_SERVER || "";
+
         if (body) {
           body = JSON.stringify(body);
           headers["Content-Type"] = "application/json";
@@ -23,7 +25,7 @@ const useHttp = () => {
           headers["Authorization"] = `Bearer ${auth.token}`;
         }
 
-        const response = await fetch(`${process.env.REACT_APP_SERVER}${url}`, {
+        const response = await fetch(`${baseUrl}${url}`, {
           method,
           body,
           headers,
@@ -58,6 +60,8 @@ const useHttp = () => {
   const request = useCallback(async (url, method = "GET", body = null, headers = {}) => {
     setLoading(true)
     try {
+      const baseUrl = process.env.REACT_APP_SERVER || "";
+
       if (body) {
         body = JSON.stringify(body);
         headers["Content-Type"] = "application/json";
@@ -68,7 +72,7 @@ const useHttp = () => {
         headers["Authorization"] = `Bearer ${auth.token}`;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_SERVER}${url}`, { method, body, headers });
+      const response = await fetch(`${baseUrl}${url}`, { method, body, headers });
       const data = await response.json();
 
       setLoading(false);

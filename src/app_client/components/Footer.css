@@ -1,0 +1,31 @@
+.customer-footer {
+  width: 100%;
+  padding: 24px 20px;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.footer-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .customer-footer {
+    padding: 20px 16px;
+  }
+  
+  .footer-link {
+    font-size: 13px;
+  }
+}

@@ -7,8 +7,9 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ClientApp />} />
         <Route path="/provider/*" element={<ProviderApp />} />
+        <Route path="/:store" element={<ClientApp />} />
+        <Route path="/*" element={<ClientApp />} />
       </Routes>
     </BrowserRouter>
   );

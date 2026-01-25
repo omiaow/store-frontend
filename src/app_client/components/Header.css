@@ -1,0 +1,30 @@
+.customer-header {
+  width: 100%;
+  padding: 32px 0px 10px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .customer-header {
+    padding: 20px 0px 5px 0px;
+  }
+  
+  .logo-image {
+    height: 70px;
+  }
+}
