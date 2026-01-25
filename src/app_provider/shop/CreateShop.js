@@ -10,7 +10,6 @@ import CreateFooter from './components/CreateFooter';
 import MapPickerOverlay from './components/MapPickerOverlay';
 import HourPickerModal from './components/HourPickerModal';
 import TelegramChannelSection from './components/TelegramChannelSection';
-import PayloadPreviewSection from './components/PayloadPreviewSection';
 import useHttp from '../../hooks/http.hook';
 import { useNavigate } from 'react-router-dom';
 
