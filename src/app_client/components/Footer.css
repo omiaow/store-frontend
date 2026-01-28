@@ -1,22 +1,24 @@
 .customer-footer {
-  width: 100%;
+  width: 75%;
   padding: 24px 20px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px dashed #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .footer-link {
-  color: #2563eb;
+  color: #ffffff;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.2s ease;
 }
 
 .footer-link:hover {
-  color: #1d4ed8;
+  color: #ffffff;
   text-decoration: underline;
 }
 

@@ -2,12 +2,12 @@
   position: fixed;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: #BF6C40;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 4px 20px rgba(191, 108, 64, 0.4);
   cursor: grab;
   z-index: 1000;
   transform: translate(-50%, -50%);
@@ -19,14 +19,14 @@
 }
 
 .floating-action-button:hover {
-  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 6px 24px rgba(191, 108, 64, 0.5);
   transform: translate(-50%, -50%) scale(1.05);
 }
 
 .floating-action-button.dragging {
   cursor: grabbing;
   transform: translate(-50%, -50%) scale(1.1);
-  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.6);
+  box-shadow: 0 8px 28px rgba(191, 108, 64, 0.6);
   transition: box-shadow 0.3s ease, transform 0.2s ease !important;
 }
 
