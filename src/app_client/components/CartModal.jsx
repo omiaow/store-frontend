@@ -16,7 +16,7 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
     clearInactivityTimer()
     inactivityTimerRef.current = setTimeout(() => {
       setActiveOptionsKey(null)
-    }, 5000)
+    }, 3000)
   }, [clearInactivityTimer])
 
   const bumpInactivity = useCallback(() => {
