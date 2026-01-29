@@ -124,7 +124,7 @@
 @media (max-width: 768px) {
   .product-card {
     width: 100%;
-    max-width: 310px;
+    max-width: 300px;
   }
   
   .product-image-container {
