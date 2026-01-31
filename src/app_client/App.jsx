@@ -21,21 +21,6 @@ function CustomerSide() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Provider-side global CSS may lock scrolling (html/body overflow: hidden).
-  // Ensure customer page can scroll while mounted.
-  useEffect(() => {
-    const prevHtmlOverflow = document.documentElement.style.overflow
-    const prevBodyOverflow = document.body.style.overflow
-
-    document.documentElement.style.overflow = 'auto'
-    document.body.style.overflow = 'auto'
-
-    return () => {
-      document.documentElement.style.overflow = prevHtmlOverflow
-      document.body.style.overflow = prevBodyOverflow
-    }
-  }, [])
-
   useEffect(() => {
     const fetchStoreData = async () => {
       if (!store) {

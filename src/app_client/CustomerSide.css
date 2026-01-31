@@ -1,5 +1,7 @@
 .customer-side {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: #121212;
@@ -7,10 +9,15 @@
 
 .customer-main {
   flex: 1;
+  min-height: 0;
   padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .products-container {
