@@ -35,6 +35,17 @@ html, body {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Make selection visible across themes */
+::selection {
+  background: rgba(58, 109, 240, 0.35);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(58, 109, 240, 0.35);
+  color: #ffffff;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -64,6 +75,8 @@ select,
 [contenteditable="true"] {
   -webkit-user-select: text;
   user-select: text;
+  /* Force visible caret on iOS/Safari */
+  caret-color: currentColor;
 }
 
 * {
