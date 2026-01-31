@@ -121,7 +121,7 @@
 }
 
 .main-page-content {
-  padding: 14px 16px calc(120px + var(--app-safe-bottom)) 16px; /* leave space for fixed footer */
+  padding: 14px 16px calc(150px + var(--app-safe-bottom)) 16px; /* leave space for fixed footer */
 }
 
 /* Stats */
