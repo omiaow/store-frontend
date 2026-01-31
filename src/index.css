@@ -27,6 +27,12 @@ html, body {
   /* Prevent iOS/Telegram pull-to-reveal background */
   overscroll-behavior: none;
   overflow: hidden;
+  /* Disable text selection globally (can be overridden) */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  /* Prevent iOS font auto-zoom */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -49,6 +55,15 @@ body {
   padding-bottom: var(--app-safe-bottom);
   box-sizing: border-box;
   touch-action: pan-y;
+}
+
+/* Allow selecting/editing inside form fields */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 * {
