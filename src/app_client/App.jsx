@@ -21,6 +21,35 @@ function CustomerSide() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // Global `index.css` locks scrolling + root height for Telegram/provider UX.
+  // Customer side should scroll normally with non-sticky header/footer.
+  useEffect(() => {
+    const prevHtmlOverflow = document.documentElement.style.overflow
+    const prevBodyOverflow = document.body.style.overflow
+    const root = document.getElementById('root')
+    const prevRootOverflow = root?.style.overflow
+    const prevRootHeight = root?.style.height
+    const prevRootMinHeight = root?.style.minHeight
+
+    document.documentElement.style.overflow = 'auto'
+    document.body.style.overflow = 'auto'
+    if (root) {
+      root.style.overflow = 'visible'
+      root.style.height = 'auto'
+      root.style.minHeight = '100vh'
+    }
+
+    return () => {
+      document.documentElement.style.overflow = prevHtmlOverflow
+      document.body.style.overflow = prevBodyOverflow
+      if (root) {
+        root.style.overflow = prevRootOverflow || ''
+        root.style.height = prevRootHeight || ''
+        root.style.minHeight = prevRootMinHeight || ''
+      }
+    }
+  }, [])
+
   useEffect(() => {
     const fetchStoreData = async () => {
       if (!store) {
