@@ -1,0 +1,136 @@
+.client-branches-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #0b1220;
+}
+
+.client-branches-map {
+  position: absolute;
+  inset: 0;
+}
+
+.client-branches-controls {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 1200; /* above Leaflet panes/tiles */
+}
+
+.client-branches-fab {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.22);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.client-branches-fab:active {
+  transform: scale(0.98);
+}
+
+.client-branches-status {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+.client-branches-chip {
+  pointer-events: auto;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: #0f172a;
+  font-weight: 700;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.22);
+}
+
+.client-branches-chipError {
+  color: #b91c1c;
+  border-color: rgba(254, 202, 202, 0.9);
+  background: rgba(254, 242, 242, 0.95);
+}
+
+.client-branch-pinIcon {
+  background: transparent;
+  border: 0;
+}
+
+.client-branch-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateZ(0);
+}
+
+.client-branch-pin--insufficient {
+  filter: blur(0.3px) grayscale(0.35);
+  opacity: 0.55;
+}
+
+.client-branch-pin--insufficient .client-branch-pinBadge {
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.16);
+}
+
+.client-branch-pin--insufficient .client-branch-pinArrow {
+  filter: drop-shadow(0 8px 12px rgba(15, 23, 42, 0.14));
+}
+
+.client-branch-pinBadge {
+  width: 56px;
+  height: 40px; /* stadium */
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.client-branch-pinLogo {
+  height: 25px;
+}
+
+.client-branch-pinLogo--placeholder {
+  background: #ffffff;
+}
+
+.client-branch-pinArrow {
+  width: 0;
+  height: 0;
+  margin-top: -2px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #ffffff;
+  filter: drop-shadow(0 10px 14px rgba(15, 23, 42, 0.22));
+  position: relative;
+}
+
+.client-branch-pinArrow::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  top: -15px;
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 15px solid #ffffff; /* border */
+  z-index: -1;
+}
+

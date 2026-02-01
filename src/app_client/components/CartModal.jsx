@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import './CartModal.css'
 
 function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose }) {
+  const navigate = useNavigate()
+  const { store } = useParams()
   const [activeOptionsKey, setActiveOptionsKey] = useState(null)
   const inactivityTimerRef = useRef(null)
 
@@ -16,7 +19,7 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
     clearInactivityTimer()
     inactivityTimerRef.current = setTimeout(() => {
       setActiveOptionsKey(null)
-    }, 3000)
+    }, 5000)
   }, [clearInactivityTimer])
 
   const bumpInactivity = useCallback(() => {
@@ -63,6 +66,17 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
     () => (items || []).reduce((sum, it) => sum + (it.quantity || 0), 0),
     [items]
   )
+
+  const handleBuy = useCallback(() => {
+    if (!store) return
+    const ids = (items || []).map((it) => it?.id).filter(Boolean)
+    const qs = new URLSearchParams()
+    ids.forEach((id) => qs.append('productIds', id))
+    onClose?.()
+    navigate(`/${encodeURIComponent(store)}/branches${qs.toString() ? `?${qs.toString()}` : ''}`, {
+      state: { cartItems: items || [] },
+    })
+  }, [store, items, navigate, onClose])
 
   if (!isOpen) return null
 
@@ -172,6 +186,17 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
               ))}
             </ul>
           )}
+        </div>
+
+        <div className="cart-modal-footer">
+          <button
+            className="cart-modal-buyBtn"
+            type="button"
+            disabled={!store || !items || items.length === 0}
+            onClick={handleBuy}
+          >
+            Buy
+          </button>
         </div>
       </div>
     </div>
