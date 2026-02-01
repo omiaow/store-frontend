@@ -79,12 +79,12 @@
   height: 44px;
   border-radius: 14px;
   border: 0;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: #BF6C40;
   color: #ffffff;
   font-weight: 800;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 10px 22px rgba(191, 108, 64, 0.25);
 }
 
 .cart-modal-buyBtn:disabled {

@@ -100,6 +100,11 @@ function BranchesPage() {
     return true
   }, [requiredByProductId])
 
+  const cartItems = useMemo(() => {
+    const items = location.state?.cartItems
+    return Array.isArray(items) ? items : []
+  }, [location.state])
+
   useEffect(() => {
     const fetchBranches = async () => {
       if (!store) {
@@ -216,7 +221,15 @@ function BranchesPage() {
       const popup = hasEnough
         ? `Branch: ${b?._id || ''}`
         : `Not enough stock for selected items`
-      L.marker([lat, lng], { icon }).bindPopup(popup).addTo(layer)
+      const marker = L.marker([lat, lng], { icon }).bindPopup(popup).addTo(layer)
+      marker.on('click', () => {
+        if (!hasEnough) return
+        const bid = b?._id
+        if (!bid) return
+        navigate(`/${encodeURIComponent(store)}/branches/${encodeURIComponent(bid)}/booking`, {
+          state: { cartItems },
+        })
+      })
     }
 
     if (points.length >= 2) {
@@ -224,7 +237,7 @@ function BranchesPage() {
     } else if (points.length === 1) {
       map.setView(points[0], 15)
     }
-  }, [branches, branchHasEnough])
+  }, [branches, branchHasEnough, cartItems, navigate, store])
 
   const useMyLocation = useCallback(() => {
     if (!navigator.geolocation) return
