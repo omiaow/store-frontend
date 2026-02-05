@@ -120,7 +120,7 @@ function BranchesPage() {
         productIds.forEach((id) => qs.append('productIds', id))
 
         const { ok, data, status } = await requestWithMeta(
-          `/${encodeURIComponent(store)}/branches${qs.toString() ? `?${qs.toString()}` : ''}`
+          `/store/${encodeURIComponent(store)}/branches${qs.toString() ? `?${qs.toString()}` : ''}`
         )
 
         if (!ok) {
@@ -149,8 +149,8 @@ function BranchesPage() {
       if (cancelled) return
       if (leafletMapRef.current) return
 
-      const fallbackLat = 43.2389
-      const fallbackLng = 76.8897
+      const fallbackLat = 42.87658553054612
+      const fallbackLng = 74.6036089976348
       const first = branches?.[0]?.location
       const initialLat = typeof first?.lat === 'number' ? first.lat : fallbackLat
       const initialLng = typeof first?.lng === 'number' ? first.lng : fallbackLng

@@ -61,7 +61,7 @@ function CustomerSide() {
       try {
         setLoading(true)
         setError(null)
-        const { ok, status, data } = await requestWithMeta(`/${encodeURIComponent(store)}`)
+        const { ok, status, data } = await requestWithMeta(`/store/${encodeURIComponent(store)}`)
         if (!ok) {
           if (status === 404) setError('Store not found')
           else setError(data?.message || 'Failed to load store data')

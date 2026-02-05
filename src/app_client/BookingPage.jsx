@@ -42,7 +42,7 @@ function BookingPage() {
       }))
 
       const { ok, data } = await requestWithMeta(
-        `/${encodeURIComponent(store)}/branches/${encodeURIComponent(branchId)}/order`,
+        `/store/${encodeURIComponent(store)}/branches/${encodeURIComponent(branchId)}/order`,
         'POST',
         {
           products,
