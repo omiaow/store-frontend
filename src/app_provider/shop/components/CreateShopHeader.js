@@ -1,8 +1,8 @@
 import React from 'react';
 
 export default function CreateShopHeader({
-    title = 'Create shop',
-    subtitle = 'Fill details and pick location on the map',
+    title = 'Создать магазин',
+    subtitle = 'Заполните данные и выберите локацию на карте',
     onBack,
 }) {
     return (
@@ -13,8 +13,8 @@ export default function CreateShopHeader({
                         type="button"
                         className="shop-create-headerBack"
                         onClick={onBack}
-                        aria-label="Back"
-                        title="Back"
+                        aria-label="Назад"
+                        title="Назад"
                     >
                         ←
                     </button>

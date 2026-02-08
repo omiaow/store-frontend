@@ -457,13 +457,11 @@
   border: 1px solid rgba(15, 23, 42, 0.12);
   background: rgba(255, 255, 255, 0.85);
   color: rgba(11, 15, 25, 0.95);
-  caret-color: rgba(11, 15, 25, 0.95);
-  -webkit-text-fill-color: rgba(11, 15, 25, 0.95);
   outline: none;
 }
 
 .main-page-editInput::placeholder {
-  color: rgba(15, 23, 42, 0.45);
+  color: rgba(75, 75, 75, 0.45);
 }
 
 .main-page-editActions {

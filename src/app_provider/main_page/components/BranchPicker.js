@@ -2,8 +2,8 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 
 function BranchPicker({
-  label = 'Branch',
-  placeholder = 'All',
+  label = 'Филиал',
+  placeholder = 'Все',
   branches = [],
   selectedBranchName,
   onSelectBranchName,
@@ -18,18 +18,18 @@ function BranchPicker({
       className="main-page-modalOverlay"
       role="dialog"
       aria-modal="true"
-      aria-label="Select branch"
+      aria-label="Выберите филиал"
       onClick={() => setIsOpen(false)}
     >
       <div className="main-page-modalCard" onClick={(e) => e.stopPropagation()}>
         <div className="main-page-modalHeader">
-          <div className="main-page-modalTitle">Select branch</div>
+          <div className="main-page-modalTitle">Выберите филиал</div>
           <button
             type="button"
             className="main-page-modalClose"
             onClick={() => setIsOpen(false)}
-            aria-label="Close"
-            title="Close"
+            aria-label="Закрыть"
+            title="Закрыть"
           >
             <svg
               className="main-page-icon"
@@ -71,7 +71,7 @@ function BranchPicker({
           </button>
 
           {branches.length === 0 ? (
-            <div className="main-page-modalEmpty">No branches available.</div>
+            <div className="main-page-modalEmpty">Нет доступных филиалов.</div>
           ) : (
             branches.map((b) => (
               <button

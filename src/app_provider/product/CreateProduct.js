@@ -58,15 +58,15 @@ function CreateProduct({ onCreated }) {
 
             <div className="shop-create-mobile">
                 <CreateShopHeader
-                    title="Create product"
-                    subtitle="Add product name, image and price"
+                    title="Создать товар"
+                    subtitle="Добавьте название, изображение и цену"
                     onBack={() => navigate('/provider/branch/store')}
                 />
 
                 <main className="shop-create-content">
                     {error ? (
                         <section className="shop-create-section shop-create-sectionError">
-                            <div className="shop-create-label">Error</div>
+                            <div className="shop-create-label">Ошибка</div>
                             <div className="shop-create-help shop-create-helpTight">
                                 {error}
                             </div>
@@ -85,7 +85,7 @@ function CreateProduct({ onCreated }) {
 
                 <CreateFooter
                     disabled={isCreateDisabled}
-                    label={loading ? 'Creating…' : 'Create product'}
+                    label={loading ? 'Создание…' : 'Создать товар'}
                     onCreate={handleCreate}
                 />
             </div>

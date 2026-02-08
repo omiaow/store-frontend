@@ -42,7 +42,7 @@ export default function HourPickerModal({
                         type="button"
                         onClick={onClose}
                     >
-                        Close
+                        Закрыть
                     </button>
                 </div>
 

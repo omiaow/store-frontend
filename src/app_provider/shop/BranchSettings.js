@@ -41,13 +41,13 @@ function BranchSettings({ mode = 'edit' }) {
 
     const dayLabels = useMemo(
         () => ({
-            1: 'Mon',
-            2: 'Tue',
-            3: 'Wed',
-            4: 'Thu',
-            5: 'Fri',
-            6: 'Sat',
-            7: 'Sun',
+            1: 'Пн',
+            2: 'Вт',
+            3: 'Ср',
+            4: 'Чт',
+            5: 'Пт',
+            6: 'Сб',
+            7: 'Вс',
         }),
         []
     );
@@ -87,8 +87,10 @@ function BranchSettings({ mode = 'edit' }) {
         currentScheduleDay && timeModal.field ? currentScheduleDay[timeModal.field] : null;
     const hourModalTitle =
         timeModal.day && timeModal.field
-            ? `${dayLabels[timeModal.day]} ${timeModal.field === 'open' ? 'open' : 'close'}`
-            : 'Time';
+            ? `${dayLabels[timeModal.day]} ${
+                  timeModal.field === 'open' ? 'открытие' : 'закрытие'
+              }`
+            : 'Время';
 
     const isCreateMode = mode === 'create';
     const branchId =
@@ -142,11 +144,11 @@ function BranchSettings({ mode = 'edit' }) {
 
             <div className="shop-create-mobile">
                 <CreateShopHeader
-                    title={isCreateMode ? 'Create branch' : 'Branch settings'}
+                    title={isCreateMode ? 'Создать филиал' : 'Настройки филиала'}
                     subtitle={
                         isCreateMode
-                            ? 'Set branch name, location and schedule'
-                            : 'Set Telegram channel, location and schedule'
+                            ? 'Укажите название, локацию и график'
+                            : 'Укажите Telegram-канал, локацию и график'
                     }
                     onBack={() => navigate('/provider/branch/store')}
                 />
@@ -157,10 +159,10 @@ function BranchSettings({ mode = 'edit' }) {
                             <div className="shop-create-row">
                                 <div className="shop-create-rowGrow">
                                     <div className="shop-create-label shop-create-labelNoMargin">
-                                        Store settings
+                                        Настройки магазина
                                     </div>
                                     <div className="shop-create-help shop-create-helpStoreSettings">
-                                        Update shop name, logo and custom name
+                                        Изменить название, логотип и короткое имя
                                     </div>
                                 </div>
 
@@ -169,7 +171,7 @@ function BranchSettings({ mode = 'edit' }) {
                                     className="shop-create-buttonSecondary"
                                     onClick={() => navigate('/provider/shop/update')}
                                 >
-                                    Open
+                                    Открыть
                                 </button>
                             </div>
                         </section>
@@ -177,13 +179,13 @@ function BranchSettings({ mode = 'edit' }) {
 
                     <section className="shop-create-section">
                         <label className="shop-create-label" htmlFor="branch-name">
-                            Branch name
+                            Название филиала
                         </label>
-                        <div className="shop-create-help">String input: `name`</div>
+                        {/* <div className="shop-create-help">Строковое поле: `name`</div> */}
                         <input
                             id="branch-name"
                             className="shop-create-input"
-                            placeholder="e.g. Downtown"
+                            placeholder="например, Downtown"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             autoComplete="off"
@@ -211,7 +213,15 @@ function BranchSettings({ mode = 'edit' }) {
 
                 <CreateFooter
                     disabled={isSaveDisabled}
-                    label={loading ? (isCreateMode ? 'Creating...' : 'Saving...') : isCreateMode ? 'Create' : 'Save'}
+                    label={
+                        loading
+                            ? isCreateMode
+                                ? 'Создание…'
+                                : 'Сохранение…'
+                            : isCreateMode
+                              ? 'Создать'
+                              : 'Сохранить'
+                    }
                     onCreate={async () => {
                         // eslint-disable-next-line no-console
                         console.log('Branch payload:', payloadPreview);

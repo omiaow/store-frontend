@@ -18,12 +18,12 @@ export default function ProductDetailsForm({
         <>
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="product-name">
-                    Name *
+                    Название *
                 </label>
                 <input
                     id="product-name"
                     className="shop-create-input"
-                    placeholder="e.g. Latte"
+                    placeholder="например, Латте"
                     value={name}
                     onChange={(e) => onNameChange(e.target.value)}
                     autoComplete="off"
@@ -32,7 +32,7 @@ export default function ProductDetailsForm({
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="product-image-url">
-                    Image URL
+                    Ссылка на изображение
                 </label>
                 <input
                     id="product-image-url"
@@ -52,7 +52,7 @@ export default function ProductDetailsForm({
                                     : 'shop-create-logoPreview shop-create-logoPreviewHidden'
                             }
                             src={imageUrl}
-                            alt="product preview"
+                            alt="предпросмотр товара"
                             onError={(e) => {
                                 setIsPreviewVisible(false);
                             }}
@@ -66,15 +66,12 @@ export default function ProductDetailsForm({
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="product-price">
-                    Price *
+                    Цена *
                 </label>
-                <div className="shop-create-help">
-                    Enter a number (example: 199 or 199.99)
-                </div>
                 <input
                     id="product-price"
                     className="shop-create-input"
-                    placeholder="e.g. 199.99"
+                    placeholder="например, 199"
                     value={price}
                     onChange={(e) => onPriceChange(e.target.value)}
                     autoComplete="off"

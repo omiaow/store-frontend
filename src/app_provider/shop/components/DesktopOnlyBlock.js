@@ -4,9 +4,9 @@ export default function DesktopOnlyBlock() {
     return (
         <div className="shop-create-desktopBlock">
             <div className="shop-create-desktopCard">
-                <div className="shop-create-title">Mobile only</div>
+                <div className="shop-create-title">Только для мобильных</div>
                 <div className="shop-create-subtitle">
-                    Open this page on a phone-sized screen to create a shop.
+                    Откройте эту страницу на экране телефона, чтобы создать магазин.
                 </div>
             </div>
         </div>

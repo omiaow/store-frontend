@@ -8,10 +8,10 @@ export default function ScheduleSection({
 }) {
     return (
         <section className="shop-create-section">
-            <div className="shop-create-label">Schedule</div>
-            <div className="shop-create-help">
-                Format: {`[{ day: 1, open: "09:00", close: "17:00" }, ...]`}
-            </div>
+            <div className="shop-create-label">График работы</div>
+            {/* <div className="shop-create-help">
+                Формат: {`[{ day: 1, open: "09:00", close: "17:00" }, ...]`}
+            </div> */}
 
             <div className="shop-create-schedule">
                 {schedule.map((s) => (

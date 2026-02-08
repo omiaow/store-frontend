@@ -5,9 +5,9 @@ export default function LocationSection({ lat, lon, onOpenMap }) {
         <section className="shop-create-section">
             <div className="shop-create-row">
                 <div>
-                    <div className="shop-create-label">Location</div>
+                    <div className="shop-create-label">Локация</div>
                     <div className="shop-create-help">
-                        Tap on the map to set точку (lat/lon)
+                        Нажмите точку на карте
                     </div>
                 </div>
                 <button
@@ -15,19 +15,19 @@ export default function LocationSection({ lat, lon, onOpenMap }) {
                     type="button"
                     onClick={onOpenMap}
                 >
-                    Pick on map
+                    Выбрать на карте
                 </button>
             </div>
 
             <div className="shop-create-coords">
                 <div className="shop-create-coord">
-                    <span className="shop-create-coordLabel">Lat</span>
+                    <span className="shop-create-coordLabel">Широта</span>
                     <span className="shop-create-coordValue">
                         {typeof lat === 'number' ? lat : '—'}
                     </span>
                 </div>
                 <div className="shop-create-coord">
-                    <span className="shop-create-coordLabel">Lon</span>
+                    <span className="shop-create-coordLabel">Долгота</span>
                     <span className="shop-create-coordValue">
                         {typeof lon === 'number' ? lon : '—'}
                     </span>

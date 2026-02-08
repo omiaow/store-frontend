@@ -42,13 +42,13 @@ function CreateShop({ onCreated }) {
 
     const dayLabels = useMemo(
         () => ({
-            1: 'Mon',
-            2: 'Tue',
-            3: 'Wed',
-            4: 'Thu',
-            5: 'Fri',
-            6: 'Sat',
-            7: 'Sun',
+            1: 'Пн',
+            2: 'Вт',
+            3: 'Ср',
+            4: 'Чт',
+            5: 'Пт',
+            6: 'Сб',
+            7: 'Вс',
         }),
         []
     );
@@ -97,8 +97,10 @@ function CreateShop({ onCreated }) {
             : null;
     const hourModalTitle =
         timeModal.day && timeModal.field
-            ? `${dayLabels[timeModal.day]} ${timeModal.field === 'open' ? 'open' : 'close'}`
-            : 'Time';
+            ? `${dayLabels[timeModal.day]} ${
+                  timeModal.field === 'open' ? 'открытие' : 'закрытие'
+              }`
+            : 'Время';
 
     return (
         <div className="shop-create-root">
@@ -140,7 +142,7 @@ function CreateShop({ onCreated }) {
 
                 <CreateFooter
                     disabled={isCreateDisabled || loading}
-                    label={loading ? 'Creating...' : 'Create shop'}
+                    label={loading ? 'Создание…' : 'Создать магазин'}
                     onCreate={async () => {
                         try {
                             const res = await requestWithMeta('/operator/store', 'POST', payloadPreview);

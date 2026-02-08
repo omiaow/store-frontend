@@ -18,12 +18,12 @@ export default function ShopDetailsForm({
         <>
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="shop-name">
-                    Name *
+                    Название *
                 </label>
                 <input
                     id="shop-name"
                     className="shop-create-input"
-                    placeholder="e.g. Coffee Corner"
+                    placeholder="например, Coffee Corner"
                     value={name}
                     onChange={(e) => onNameChange(e.target.value)}
                     autoComplete="off"
@@ -32,15 +32,15 @@ export default function ShopDetailsForm({
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="shop-custom">
-                    Custom name (optional)
+                    Короткое название (обязательно)
                 </label>
                 <div className="shop-create-help">
-                    Used like a username: lowercase, no spaces recommended
+                    Используется как логин вашего магазина
                 </div>
                 <input
                     id="shop-custom"
                     className="shop-create-input"
-                    placeholder="e.g. coffee_corner"
+                    placeholder="например, coffee_corner"
                     value={customName}
                     onChange={(e) => onCustomNameChange(e.target.value)}
                     autoComplete="off"
@@ -49,7 +49,7 @@ export default function ShopDetailsForm({
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="shop-logo">
-                    Logo URL
+                    Ссылка на логотип
                 </label>
                 <input
                     id="shop-logo"
@@ -69,7 +69,7 @@ export default function ShopDetailsForm({
                                     : 'shop-create-logoPreview shop-create-logoPreviewHidden'
                             }
                             src={logoUrl}
-                            alt="logo preview"
+                            alt="предпросмотр логотипа"
                             onError={(e) => {
                                 setIsPreviewVisible(false);
                             }}

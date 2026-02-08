@@ -150,8 +150,8 @@ export default function MapPickerOverlay({
                         className="shop-create-mapFab shop-create-mapFabBack"
                         type="button"
                         onClick={onClose}
-                        aria-label="Back"
-                        title="Back"
+                        aria-label="Назад"
+                        title="Назад"
                     >
                         <svg
                             width="20"
@@ -175,8 +175,8 @@ export default function MapPickerOverlay({
                         className="shop-create-mapFab shop-create-mapFabMyLoc"
                         type="button"
                         onClick={useMyLocation}
-                        aria-label="My location"
-                        title="My location"
+                        aria-label="Моё местоположение"
+                        title="Моё местоположение"
                     >
                         <svg
                             width="20"
@@ -207,7 +207,7 @@ export default function MapPickerOverlay({
 
             <div className="shop-create-mapBottom">
                 <div className="shop-create-mapCoords">
-                    {hasPoint ? `${lat}, ${lon}` : 'No point selected'}
+                    {hasPoint ? `${lat}, ${lon}` : 'Точка не выбрана'}
                 </div>
                 <button
                     className="shop-create-buttonPrimary"
@@ -215,7 +215,7 @@ export default function MapPickerOverlay({
                     disabled={!hasPoint}
                     onClick={onClose}
                 >
-                    Use this location
+                    Использовать эту локацию
                 </button>
             </div>
         </div>

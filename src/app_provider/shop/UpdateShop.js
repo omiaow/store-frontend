@@ -43,15 +43,15 @@ function UpdateShop({ initialShop }) {
 
             <div className="shop-create-mobile">
                 <CreateShopHeader
-                    title="Update shop"
-                    subtitle="Change shop info and save"
+                    title="Обновить магазин"
+                    subtitle="Измените данные магазина и сохраните"
                     onBack={() => navigate('/provider/branch/store')}
                 />
 
                 <main className="shop-create-content">
                     {error ? (
                         <section className="shop-create-section shop-create-sectionError">
-                            <div className="shop-create-label">Error</div>
+                            <div className="shop-create-label">Ошибка</div>
                             <div className="shop-create-help shop-create-helpTight">
                                 {error}
                             </div>
@@ -70,12 +70,12 @@ function UpdateShop({ initialShop }) {
 
                 <CreateFooter
                     disabled={isSaveDisabled}
-                    label={loading ? 'Saving...' : 'Save'}
+                    label={loading ? 'Сохранение…' : 'Сохранить'}
                     onCreate={async () => {
                         setError(null);
                         const res = await requestWithMeta('/operator/store', 'PUT', payloadPreview);
                         if (!res?.ok) {
-                            setError(res?.data?.error || res?.data?.message || 'Failed to update shop');
+                            setError(res?.data?.error || res?.data?.message || 'Не удалось обновить магазин');
                             return;
                         }
                         navigate('/provider/branch/store', { replace: true });

@@ -10,15 +10,15 @@ function ProductsSection({
   return (
     <section className="main-page-products" aria-label="Products">
       <div className="main-page-sectionHeader">
-        <div className="main-page-sectionTitle">Products</div>
+        <div className="main-page-sectionTitle">Продукты</div>
         <div className="main-page-sectionSub">
-          {products.length ? `${products.length} items` : 'No products yet'}
+          {products.length ? `${products.length} продуктов` : 'Нет продуктов'}
         </div>
       </div>
 
       <div className="main-page-productList">
         {products.length === 0 ? (
-          <div className="main-page-emptyState">Products will appear here.</div>
+          <div className="main-page-emptyState">Продукты будут появляться здесь.</div>
         ) : (
           products.map((p) => (
             <ProductItem

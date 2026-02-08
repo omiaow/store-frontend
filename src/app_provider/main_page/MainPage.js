@@ -5,7 +5,6 @@ import './MainPage.css';
 import BranchPicker from './components/BranchPicker';
 import StatsGrid from './components/StatsGrid';
 import ProductsSection from './components/ProductsSection';
-import { mockStats } from './mockData';
 import useHttp from '../../hooks/http.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -22,7 +21,15 @@ function MainPage() {
 
   const selectedBranch = React.useMemo(() => {
     if (!selectedBranchId) return null;
-    return branches.find((b) => (b?._id ?? b?.id) === selectedBranchId) || null;
+    // `useParams()` returns strings; API ids may be numbers.
+    const selectedKey = String(selectedBranchId);
+    return (
+      branches.find((b) => {
+        const id = b?._id ?? b?.id;
+        if (id === undefined || id === null) return false;
+        return String(id) === selectedKey;
+      }) || null
+    );
   }, [branches, selectedBranchId]);
 
   const selectedBranchName = selectedBranch?.name ?? null;
@@ -155,12 +162,12 @@ function MainPage() {
     <div className="main-page-root">
       <div className="main-page-mobile">
         <header className="main-page-header">
-          <div className="main-page-headerLabel">Branch</div>
+          <div className="main-page-headerLabel">Филиал</div>
 
           <div className="main-page-headerRow">
             <div className="main-page-headerGrow">
               <BranchPicker
-                placeholder="Store"
+                placeholder="Все"
                 branches={branches}
                 selectedBranchName={selectedBranchName}
                 onSelectBranchName={(nameOrNull) => {
@@ -190,8 +197,8 @@ function MainPage() {
                     state: { branch: selectedBranch },
                   });
                 }}
-                aria-label={selectedBranchId ? 'Update branch' : 'Update shop'}
-                title={selectedBranchId ? 'Update branch' : 'Update shop'}
+                aria-label={selectedBranchId ? 'Обновить филиал' : 'Обновить магазин'}
+                title={selectedBranchId ? 'Обновить филиал' : 'Обновить магазин'}
               >
                 <svg
                   className="main-page-icon"
@@ -219,8 +226,8 @@ function MainPage() {
                 type="button"
                 className="main-page-iconButton main-page-iconButton--lg"
                 onClick={() => navigate('/provider/shop/branch/create')}
-                aria-label="Create branch"
-                title="Create branch"
+                aria-label="Создать филиал"
+                title="Создать филиал"
               >
                 <svg
                   className="main-page-icon"
@@ -248,7 +255,7 @@ function MainPage() {
         </header>
 
         <main className="main-page-content">
-          <StatsGrid stats={mockStats} />
+          <StatsGrid/>
           <ProductsSection
             products={products}
             selectedBranchId={selectedBranchId}
@@ -263,7 +270,7 @@ function MainPage() {
             className="main-page-addButton"
             onClick={() => navigate('/provider/product/create')}
           >
-            + Add product
+            + Добавить продукт
           </button>
         </footer>
       </div>

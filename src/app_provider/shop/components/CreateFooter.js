@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CreateFooter({ disabled, onCreate, label = 'Create shop' }) {
+export default function CreateFooter({ disabled, onCreate, label = 'Создать магазин' }) {
     return (
         <footer className="shop-create-footer">
             <button
