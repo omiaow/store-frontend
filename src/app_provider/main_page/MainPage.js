@@ -15,6 +15,11 @@ function MainPage() {
   const navigate = useNavigate();
   const params = useParams();
   const { requestWithMeta } = useHttp();
+  // React 18 StrictMode runs effects twice in dev; dedupe in-flight requests
+  // so we don't fire duplicate network calls and we still update state.
+  const branchesPromiseRef = React.useRef(null);
+  const productsPromiseRef = React.useRef(null);
+  const lastRequestFnRef = React.useRef(null);
 
   const selectedBranchId =
     params.branchId && params.branchId !== 'store' ? params.branchId : null;
@@ -70,93 +75,99 @@ function MainPage() {
   }, []);
 
   React.useEffect(() => {
-    let isMounted = true;
+    let cancelled = false;
 
-    async function loadBranches() {
+    // If auth/token changes, requestWithMeta callback identity changes.
+    // In that case, clear cached promises so we refetch with new credentials.
+    if (lastRequestFnRef.current !== requestWithMeta) {
+      lastRequestFnRef.current = requestWithMeta;
+      branchesPromiseRef.current = null;
+      productsPromiseRef.current = null;
+    }
+
+    const branchesPromise =
+      branchesPromiseRef.current ??
+      (branchesPromiseRef.current = requestWithMeta('/operator/branches', 'GET'));
+    const productsPromise =
+      productsPromiseRef.current ??
+      (productsPromiseRef.current = requestWithMeta('/operator/products', 'GET'));
+
+    (async () => {
       try {
-        if (!isMounted) return;
-        const res = await requestWithMeta('/operator/branches', 'GET');
+        const [branchesRes, productsRes] = await Promise.all([
+          branchesPromise,
+          productsPromise,
+        ]);
 
-        if (!isMounted) return;
+        if (cancelled) return;
 
-        if (res?.status === 404) {
+        if (branchesRes?.status === 404) {
           navigate('/provider/shop/create', { replace: true });
           return;
         }
 
-        // For other non-OK statuses, just keep empty list for now.
-        if (!res?.ok) return;
+        if (branchesRes?.ok) {
+          const data = branchesRes?.data;
+          const listRaw = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.branches)
+              ? data.branches
+              : [];
 
-        const data = res?.data;
-        const listRaw = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.branches)
-            ? data.branches
-            : [];
+          const normalized = listRaw.map((b) => {
+            const id = b?._id ?? b?.id;
+            return { ...b, _id: id, id };
+          });
 
-        const normalized = listRaw.map((b) => {
-          const id = b?._id ?? b?.id;
-          return { ...b, _id: id, id };
-        });
+          setBranches(normalized);
+        }
 
-        setBranches(normalized);
+        if (productsRes?.ok) {
+          const data = productsRes?.data;
+          const listRaw = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.products)
+              ? data.products
+              : [];
 
-        if (normalized.length === 1) {
-          const onlyId = normalized[0]?._id ?? normalized[0]?.id;
-          if (onlyId) navigate(`/provider/branch/${onlyId}`, { replace: true });
-        } else if (!params.branchId) {
-          navigate('/provider/branch/store', { replace: true });
+          const normalized = listRaw.map((p) => {
+            const id = p?._id ?? p?.id;
+            return {
+              ...p,
+              _id: id,
+              id,
+              imageUrl: p?.imageUrl ?? p?.image_url ?? null,
+            };
+          });
+
+          setProducts(normalized);
         }
       } catch (_) {
         // ignore for now (view-first app)
       }
-    }
+    })();
 
-    loadBranches();
     return () => {
-      isMounted = false;
+      cancelled = true;
     };
-  }, [requestWithMeta, navigate, params.branchId]);
+  }, [requestWithMeta, navigate]);
 
   React.useEffect(() => {
-    let isMounted = true;
+    // Navigation decisions based on already-fetched branches + current route.
+    if (!Array.isArray(branches) || branches.length === 0) return;
 
-    async function loadProducts() {
-      try {
-        if (!isMounted) return;
-        const res = await requestWithMeta('/operator/products', 'GET');
-        if (!isMounted) return;
-
-        if (!res?.ok) return;
-
-        const data = res?.data;
-        const listRaw = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.products)
-            ? data.products
-            : [];
-
-        const normalized = listRaw.map((p) => {
-          const id = p?._id ?? p?.id;
-          return {
-            ...p,
-            _id: id,
-            id,
-            imageUrl: p?.imageUrl ?? p?.image_url ?? null,
-          };
-        });
-
-        setProducts(normalized);
-      } catch (_) {
-        // ignore for now (view-first app)
-      }
+    if (branches.length === 1) {
+      const onlyId = branches[0]?._id ?? branches[0]?.id;
+      if (!onlyId) return;
+      if (String(params.branchId) === String(onlyId)) return;
+      navigate(`/provider/branch/${onlyId}`, { replace: true });
+      return;
     }
 
-    loadProducts();
-    return () => {
-      isMounted = false;
-    };
-  }, [requestWithMeta]);
+    if (!params.branchId) {
+      navigate('/provider/branch/store', { replace: true });
+    }
+  }, [branches, params.branchId, navigate]);
 
   return (
     <div className="main-page-root">
