@@ -79,61 +79,61 @@ function BookingPage() {
             />
           </svg>
         </button>
-        <div className="client-booking-title">Booking</div>
+        <div className="client-booking-title">Заказ</div>
         <div className="client-booking-spacer" />
       </div>
 
       <div className="client-booking-content">
         {success ? (
           <div className="client-booking-card">
-            <div className="client-booking-successTitle">Booked</div>
+            <div className="client-booking-successTitle">Заказ создан</div>
             <div className="client-booking-successText">
-              Your booking was created. Please go to the branch to pick up your order.
+              Ваш заказ был создан. Пожалуйста, посетите филиал для получения вашего заказа.
             </div>
             <button className="client-booking-primary" type="button" onClick={() => navigate(`/${encodeURIComponent(store)}`)}>
-              Back to products
+              Вернуться к продуктам
             </button>
           </div>
         ) : (
           <div className="client-booking-card">
-            <div className="client-booking-cardTitle">Customer details</div>
+            <div className="client-booking-cardTitle">Детали заказа</div>
 
             {!cartItems.length && (
               <div className="client-booking-warning">
-                Cart is empty. Go back and select products first.
+                Корзина пуста. Пожалуйста, вернитесь и выберите продукты сначала.
               </div>
             )}
 
             <label className="client-booking-label">
-              Name
+              Имя
               <input
                 className="client-booking-input"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder="Ваше имя"
                 autoComplete="name"
               />
             </label>
 
             <label className="client-booking-label">
-              Phone number
+              Телефон
               <input
                 className="client-booking-input"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+7 ..."
+                placeholder="+996 ..."
                 autoComplete="tel"
                 inputMode="tel"
               />
             </label>
 
             <label className="client-booking-label">
-              Description (optional)
+              Комментарий (необязательно)
               <textarea
                 className="client-booking-textarea"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Anything we should know?"
+                placeholder="Что-нибудь, что мы должны знать?"
                 rows={3}
               />
             </label>
@@ -146,7 +146,7 @@ function BookingPage() {
               disabled={!canSubmit || submitting}
               onClick={handleSubmit}
             >
-              {submitting ? 'Creating…' : 'Create booking'}
+              {submitting ? 'Создание заказа…' : 'Создать заказ'}
             </button>
           </div>
         )}

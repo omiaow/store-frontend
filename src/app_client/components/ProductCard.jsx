@@ -38,7 +38,7 @@ function ProductCard({ product, onAddToCart }) {
       <div className="product-info">
         <h3 className="product-name">{product.name}</h3>
         <div className="product-price-container">
-          <div className="product-price">${product.price.toFixed(2)}</div>
+          <div className="product-price">{product.price.toFixed(2)} сом</div>
           <button 
             className={`add-button ${isAnimating ? 'animating' : ''}`}
             onClick={handleAddClick}

@@ -125,13 +125,13 @@ function BranchesPage() {
 
         if (!ok) {
           if (status === 404) setError('Store not found')
-          else setError(data?.error || data?.message || 'Failed to load branches')
+          else setError(data?.error || data?.message || 'Ошибка загрузки филиалов')
           return
         }
 
         setBranches(data?.branches || [])
       } catch (e) {
-        setError(e.message || 'Failed to load branches')
+        setError(e.message || 'Ошибка загрузки филиалов')
       } finally {
         setLoading(false)
       }
@@ -219,8 +219,8 @@ function BranchesPage() {
       })
 
       const popup = hasEnough
-        ? `Branch: ${b?._id || ''}`
-        : `Not enough stock for selected items`
+        ? `Филиал: ${b?._id || ''}`
+        : `Недостаточно товаров на складе`
       const marker = L.marker([lat, lng], { icon }).bindPopup(popup).addTo(layer)
       marker.on('click', () => {
         if (!hasEnough) return
@@ -307,11 +307,11 @@ function BranchesPage() {
       </div>
 
       <div className="client-branches-status">
-        {loading && <div className="client-branches-chip">Loading branches…</div>}
+        {loading && <div className="client-branches-chip">Загрузка филиалов…</div>}
         {!loading && error && <div className="client-branches-chip client-branches-chipError">{error}</div>}
         {!loading && !error && (
           <div className="client-branches-chip">
-            {branches.length} branches
+            Выберите филиал
           </div>
         )}
       </div>

@@ -19,6 +19,12 @@
   object-fit: contain;
 }
 
+.logo-skeleton {
+  height: 100px;
+  width: 150px;
+  border-radius: 16px;
+}
+
 @media (max-width: 768px) {
   .customer-header {
     padding: 20px 0px 5px 0px;
@@ -26,5 +32,10 @@
   
   .logo-image {
     height: 70px;
+  }
+
+  .logo-skeleton {
+    height: 70px;
+    width: 120px;
   }
 }

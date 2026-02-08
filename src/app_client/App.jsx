@@ -15,11 +15,11 @@ function CustomerSide() {
   const [fabVisible, setFabVisible] = useState(false)
   const [fabPosition, setFabPosition] = useState(null)
   const [products, setProducts] = useState([])
-  // const [branches, setBranches] = useState([])
   const [storeData, setStoreData] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const skeletonCards = useMemo(() => Array.from({ length: 3 }, (_, i) => i), [])
 
   // Global `index.css` locks scrolling + root height for Telegram/provider UX.
   // Customer side should scroll normally with non-sticky header/footer.
@@ -169,11 +169,25 @@ function CustomerSide() {
 
   return (
     <div className="customer-side">
-      <Header imageUrl={storeData?.logoUrl} />
+      <Header imageUrl={storeData?.logoUrl} loading={loading} />
       <main className="customer-main">
         {loading && (
-          <div className="loading-container">
-            <p>Loading products...</p>
+          <div className="products-container products-container--skeleton" aria-label="Loading products">
+            {skeletonCards.map((i) => (
+              <div key={i} className="product-card product-card--skeleton" aria-hidden="true">
+                <div className="product-image-container">
+                  <div className="skeleton skeleton--block product-skeleton-image" />
+                  <div className="image-gradient-overlay" />
+                </div>
+                <div className="product-info">
+                  <div className="skeleton skeleton--text product-skeleton-title" />
+                  <div className="product-price-container">
+                    <div className="skeleton skeleton--text product-skeleton-price" />
+                    <div className="skeleton skeleton--circle product-skeleton-btn" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
         {error && (

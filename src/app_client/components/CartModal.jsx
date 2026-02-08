@@ -92,8 +92,8 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
       >
         <div className="cart-modal-header">
           <div className="cart-modal-title">
-            Selected products
-            <span className="cart-modal-subtitle">{totalItems} items</span>
+            Выбранные продукты
+            <span className="cart-modal-subtitle">количество: {totalItems}</span>
           </div>
           <button className="cart-modal-close" type="button" onClick={() => onClose?.()} aria-label="Close cart">
             ×
@@ -102,7 +102,7 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
 
         <div className="cart-modal-body">
           {(!items || items.length === 0) ? (
-            <div className="cart-modal-empty">Your cart is empty.</div>
+            <div className="cart-modal-empty">Корзина пуста.</div>
           ) : (
             <ul className="cart-modal-list">
               {items.map((it) => (
@@ -195,7 +195,7 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
             disabled={!store || !items || items.length === 0}
             onClick={handleBuy}
           >
-            Buy
+            Заказать
           </button>
         </div>
       </div>
