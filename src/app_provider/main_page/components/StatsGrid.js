@@ -8,6 +8,7 @@ function StatsGrid() {
   const statsPromiseRef = React.useRef(null);
   const lastRequestFnRef = React.useRef(null);
   const lastBranchKeyRef = React.useRef(null);
+  const [loading, setLoading] = React.useState(true);
 
   const [stats, setStats] = React.useState({
     soldProducts: '—',
@@ -32,6 +33,12 @@ function StatsGrid() {
       lastBranchKeyRef.current = branchKey;
       statsPromiseRef.current = null;
     }
+
+    setLoading(true);
+    setStats({
+      soldProducts: '—',
+      earnedAmount: '—',
+    });
 
     const statsPromise =
       statsPromiseRef.current ??
@@ -60,6 +67,8 @@ function StatsGrid() {
         });
       } catch (_) {
         // ignore for now (view-first app)
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
 
@@ -69,15 +78,30 @@ function StatsGrid() {
   }, [requestWithMeta, params.branchId]);
 
   return (
-    <section className="main-page-stats" aria-label="Stats">
-      <div className="main-page-statCard">
-        <div className="main-page-statTitle">Проданные товары</div>
-        <div className="main-page-statValue">{stats?.soldProducts ?? '—'}</div>
-      </div>
-      <div className="main-page-statCard">
-        <div className="main-page-statTitle">Заработано</div>
-        <div className="main-page-statValue">{stats?.earnedAmount ?? '—'}</div>
-      </div>
+    <section className="main-page-stats" aria-label="Stats" aria-busy={loading}>
+      {loading ? (
+        <>
+          <div className="main-page-statCard main-page-statCard--skeleton" aria-hidden="true">
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statTitleSkeleton" />
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statValueSkeleton" />
+          </div>
+          <div className="main-page-statCard main-page-statCard--skeleton" aria-hidden="true">
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statTitleSkeleton" />
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statValueSkeleton" />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="main-page-statCard">
+            <div className="main-page-statTitle">Проданные товары</div>
+            <div className="main-page-statValue">{stats?.soldProducts ?? '—'}</div>
+          </div>
+          <div className="main-page-statCard">
+            <div className="main-page-statTitle">Заработано</div>
+            <div className="main-page-statValue">{stats?.earnedAmount ?? '—'}</div>
+          </div>
+        </>
+      )}
     </section>
   );
 }

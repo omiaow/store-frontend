@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 import './MainPage.css';
 
-import BranchPicker from './components/BranchPicker';
+import MainPageHeader from './components/MainPageHeader';
 import StatsGrid from './components/StatsGrid';
 import ProductsSection from './components/ProductsSection';
 import useHttp from '../../hooks/http.hook';
@@ -12,6 +12,7 @@ function MainPage() {
   // View-only placeholders. Replace with real data later.
   const [branches, setBranches] = React.useState([]);
   const [products, setProducts] = React.useState([]);
+  const [productsLoading, setProductsLoading] = React.useState(true);
   const navigate = useNavigate();
   const params = useParams();
   const { requestWithMeta } = useHttp();
@@ -85,6 +86,7 @@ function MainPage() {
       productsPromiseRef.current = null;
     }
 
+    setProductsLoading(true);
     const branchesPromise =
       branchesPromiseRef.current ??
       (branchesPromiseRef.current = requestWithMeta('/operator/branches', 'GET'));
@@ -144,6 +146,8 @@ function MainPage() {
         }
       } catch (_) {
         // ignore for now (view-first app)
+      } finally {
+        if (!cancelled) setProductsLoading(false);
       }
     })();
 
@@ -172,103 +176,38 @@ function MainPage() {
   return (
     <div className="main-page-root">
       <div className="main-page-mobile">
-        <header className="main-page-header">
-          <div className="main-page-headerLabel">Филиал</div>
-
-          <div className="main-page-headerRow">
-            <div className="main-page-headerGrow">
-              <BranchPicker
-                placeholder="Все"
-                branches={branches}
-                selectedBranchName={selectedBranchName}
-                onSelectBranchName={(nameOrNull) => {
-                  if (nameOrNull === null) {
-                    navigate('/provider/branch/store');
-                    return;
-                  }
-                  const found = branches.find((b) => b?.name === nameOrNull);
-                  const id = found?._id ?? found?.id;
-                  if (id) navigate(`/provider/branch/${id}`);
-                }}
-                disabled={isBranchPickerDisabled}
-                hideLabel
-              />
-            </div>
-
-            <div className="main-page-headerActions">
-              <button
-                type="button"
-                className="main-page-iconButton main-page-iconButton--lg"
-                onClick={() => {
-                  if (!selectedBranchId) {
-                    navigate('/provider/shop/update');
-                    return;
-                  }
-                  navigate(`/provider/shop/branch/${selectedBranchId}/edit`, {
-                    state: { branch: selectedBranch },
-                  });
-                }}
-                aria-label={selectedBranchId ? 'Обновить филиал' : 'Обновить магазин'}
-                title={selectedBranchId ? 'Обновить филиал' : 'Обновить магазин'}
-              >
-                <svg
-                  className="main-page-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 20h4l10.5-10.5a1.5 1.5 0 0 0 0-2.1l-1.9-1.9a1.5 1.5 0 0 0-2.1 0L4 15.9V20z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13.5 6.5l4 4"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                className="main-page-iconButton main-page-iconButton--lg"
-                onClick={() => navigate('/provider/shop/branch/create')}
-                aria-label="Создать филиал"
-                title="Создать филиал"
-              >
-                <svg
-                  className="main-page-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 5V19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M5 12H19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
+        <MainPageHeader
+          branches={branches}
+          selectedBranchName={selectedBranchName}
+          selectedBranchId={selectedBranchId}
+          selectedBranch={selectedBranch}
+          isBranchPickerDisabled={isBranchPickerDisabled}
+          onSelectBranchName={(nameOrNull) => {
+            if (nameOrNull === null) {
+              navigate('/provider/branch/store');
+              return;
+            }
+            const found = branches.find((b) => b?.name === nameOrNull);
+            const id = found?._id ?? found?.id;
+            if (id) navigate(`/provider/branch/${id}`);
+          }}
+          onEditClick={() => {
+            if (!selectedBranchId) {
+              navigate('/provider/shop/update');
+              return;
+            }
+            navigate(`/provider/shop/branch/${selectedBranchId}/edit`, {
+              state: { branch: selectedBranch },
+            });
+          }}
+          onCreateBranchClick={() => navigate('/provider/shop/branch/create')}
+        />
 
         <main className="main-page-content">
-          <StatsGrid/>
+          <StatsGrid />
           <ProductsSection
             products={products}
+            loading={productsLoading}
             selectedBranchId={selectedBranchId}
             onProductUpdated={handleProductUpdated}
             onProductDeleted={handleProductDeleted}

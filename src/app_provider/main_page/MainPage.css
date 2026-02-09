@@ -6,6 +6,91 @@
   color: #0b0f19;
 }
 
+/* Skeleton (provider) */
+.main-page-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.06) 0%,
+    rgba(15, 23, 42, 0.11) 45%,
+    rgba(15, 23, 42, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: mainPageSkeletonShimmer 1.05s ease-in-out infinite;
+}
+
+.main-page-skeleton--block {
+  display: block;
+}
+
+.main-page-skeleton--text {
+  border-radius: 999px;
+}
+
+.main-page-skeleton--circle {
+  border-radius: 999px;
+}
+
+@keyframes mainPageSkeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.main-page-statCard--skeleton {
+  overflow: hidden;
+}
+
+.main-page-statTitleSkeleton {
+  height: 12px;
+  width: 68%;
+}
+
+.main-page-statValueSkeleton {
+  height: 22px;
+  width: 52%;
+  margin-top: 10px;
+}
+
+.main-page-productsTitleSkeleton {
+  height: 14px;
+  width: 26%;
+}
+
+.main-page-productsSubSkeleton {
+  height: 12px;
+  width: 34%;
+}
+
+.main-page-productItem--skeleton {
+  align-items: center;
+}
+
+.main-page-productSkeletonImage {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+.main-page-productSkeletonName {
+  height: 14px;
+  width: 62%;
+}
+
+.main-page-productSkeletonMeta {
+  height: 12px;
+  width: 42%;
+}
+
+.main-page-productSkeletonBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+}
+
 /* Scroll container (body scroll is locked globally) */
 .main-page-mobile {
   height: 100%;

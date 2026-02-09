@@ -185,7 +185,7 @@ function BranchSettings({ mode = 'edit' }) {
                         <input
                             id="branch-name"
                             className="shop-create-input"
-                            placeholder="например, Downtown"
+                            placeholder="например, ул. Манаса, 123"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             autoComplete="off"

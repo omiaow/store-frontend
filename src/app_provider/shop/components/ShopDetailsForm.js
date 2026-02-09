@@ -23,7 +23,7 @@ export default function ShopDetailsForm({
                 <input
                     id="shop-name"
                     className="shop-create-input"
-                    placeholder="например, Coffee Corner"
+                    placeholder="например, Макаронная"
                     value={name}
                     onChange={(e) => onNameChange(e.target.value)}
                     autoComplete="off"
@@ -40,7 +40,7 @@ export default function ShopDetailsForm({
                 <input
                     id="shop-custom"
                     className="shop-create-input"
-                    placeholder="например, coffee_corner"
+                    placeholder="например, macaronnaya"
                     value={customName}
                     onChange={(e) => onCustomNameChange(e.target.value)}
                     autoComplete="off"
