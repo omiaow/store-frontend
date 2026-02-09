@@ -67,6 +67,15 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
     [items]
   )
 
+  const totalPrice = useMemo(() => {
+    return (items || []).reduce((sum, it) => {
+      const qty = Number(it?.quantity || 0)
+      const price = typeof it?.price === 'number' ? it.price : Number(it?.price)
+      if (!Number.isFinite(qty) || !Number.isFinite(price)) return sum
+      return sum + price * qty
+    }, 0)
+  }, [items])
+
   const handleBuy = useCallback(() => {
     if (!store) return
     const ids = (items || []).map((it) => it?.id).filter(Boolean)
@@ -93,7 +102,8 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
         <div className="cart-modal-header">
           <div className="cart-modal-title">
             Выбранные продукты
-            <span className="cart-modal-subtitle">количество: {totalItems}</span>
+            <span className="cart-modal-subtitle">всего: {totalItems}</span>
+            <span className="cart-modal-subtitle">итого: {totalPrice.toFixed(2)} сом</span>
           </div>
           <button className="cart-modal-close" type="button" onClick={() => onClose?.()} aria-label="Close cart">
             ×
@@ -116,7 +126,7 @@ function CartModal({ isOpen, items, onIncrease, onDecrease, onRemove, onClose })
                     <div className="cart-modal-item-meta">
                       <div className="cart-modal-item-name">{it.name}</div>
                       {typeof it.price === 'number' && (
-                        <div className="cart-modal-item-price">${it.price.toFixed(2)}</div>
+                        <div className="cart-modal-item-price">{it.price.toFixed(2)} сом</div>
                       )}
                     </div>
                   </div>
