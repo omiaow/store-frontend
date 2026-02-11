@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './Shop.css';
 
 import DesktopOnlyBlock from './components/DesktopOnlyBlock';
@@ -14,28 +14,62 @@ function UpdateShop({ initialShop }) {
     const { loading, requestWithMeta } = useHttp();
 
     const shopFromState = location?.state?.shop || null;
-    const initial = initialShop || shopFromState || {};
-    const [name, setName] = useState(initialShop?.name ?? '');
-    const [customName, setCustomName] = useState(initialShop?.customName ?? '');
-    const [logoUrl, setLogoUrl] = useState(initialShop?.logoUrl ?? '');
-    const [error, setError] = useState(null);
+    const initial = initialShop || shopFromState || null;
 
-    React.useEffect(() => {
+    const [name, setName] = useState(initial?.name ?? '');
+    const [customName, setCustomName] = useState(initial?.customName ?? '');
+    const [logoUrl, setLogoUrl] = useState(initial?.logoUrl ?? '');
+    const [error, setError] = useState(null);
+    const [prefillLoading, setPrefillLoading] = useState(false);
+
+    useEffect(() => {
+        // Instant prefill from navigation state/prop (if present),
+        // then we still fetch fresh data from API below.
+        if (!initial) return;
         setName(initial?.name ?? '');
         setCustomName(initial?.customName ?? '');
         setLogoUrl(initial?.logoUrl ?? '');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initialShop, shopFromState]);
+    }, [initial]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        async function loadShop() {
+            setError(null);
+            setPrefillLoading(true);
+            try {
+                const res = await requestWithMeta('/operator/store', 'GET');
+                if (cancelled) return;
+
+                if (!res?.ok) {
+                    setError(res?.data?.error || res?.data?.message || 'Не удалось загрузить магазин');
+                    return;
+                }
+
+                const shop = res?.data?.shop ?? res?.data ?? null;
+                setName(shop?.name ?? '');
+                setCustomName(shop?.customName ?? '');
+                setLogoUrl(shop?.logoUrl ?? '');
+            } finally {
+                if (!cancelled) setPrefillLoading(false);
+            }
+        }
+
+        loadShop();
+        return () => {
+            cancelled = true;
+        };
+    }, [requestWithMeta]);
 
     const payloadPreview = useMemo(() => {
         return {
-            name,
-            customName,
-            logoUrl: logoUrl,
+            name: String(name ?? '').trim(),
+            customName: String(customName ?? '').trim(),
+            logoUrl: String(logoUrl ?? '').trim() || null,
         };
     }, [name, customName, logoUrl]);
 
-    const isSaveDisabled = loading || name.trim().length === 0;
+    const isSaveDisabled = loading || prefillLoading || String(name ?? '').trim().length === 0;
 
     return (
         <div className="shop-create-root">
@@ -58,19 +92,39 @@ function UpdateShop({ initialShop }) {
                         </section>
                     ) : null}
 
-                    <ShopDetailsForm
-                        name={name}
-                        onNameChange={setName}
-                        customName={customName}
-                        onCustomNameChange={setCustomName}
-                        logoUrl={logoUrl}
-                        onLogoUrlChange={setLogoUrl}
-                    />
+                    {prefillLoading ? (
+                        <>
+                            <section className="shop-create-section">
+                                <div className="shop-create-skeleton shop-create-skeleton--text shop-create-skeletonLabel" />
+                                <div className="shop-create-skeleton shop-create-skeletonInput" />
+                            </section>
+
+                            <section className="shop-create-section">
+                                <div className="shop-create-skeleton shop-create-skeleton--text shop-create-skeletonLabel" />
+                                <div className="shop-create-skeleton shop-create-skeleton--text shop-create-skeletonHelp" />
+                                <div className="shop-create-skeleton shop-create-skeletonInput" />
+                            </section>
+
+                            <section className="shop-create-section">
+                                <div className="shop-create-skeleton shop-create-skeleton--text shop-create-skeletonLabel" />
+                                <div className="shop-create-skeleton shop-create-skeletonInput" />
+                            </section>
+                        </>
+                    ) : (
+                        <ShopDetailsForm
+                            name={name}
+                            onNameChange={setName}
+                            customName={customName}
+                            onCustomNameChange={setCustomName}
+                            logoUrl={logoUrl}
+                            onLogoUrlChange={setLogoUrl}
+                        />
+                    )}
                 </main>
 
                 <CreateFooter
                     disabled={isSaveDisabled}
-                    label={loading ? 'Сохранение…' : 'Сохранить'}
+                    label={prefillLoading ? 'Загрузка…' : loading ? 'Сохранение…' : 'Сохранить'}
                     onCreate={async () => {
                         setError(null);
                         const res = await requestWithMeta('/operator/store', 'PUT', payloadPreview);
