@@ -13,6 +13,8 @@ function StatsGrid() {
   const [stats, setStats] = React.useState({
     soldProducts: '—',
     earnedAmount: '—',
+    totalOrders: '—',
+    canceledOrders: '—',
   });
 
   React.useEffect(() => {
@@ -38,6 +40,8 @@ function StatsGrid() {
     setStats({
       soldProducts: '—',
       earnedAmount: '—',
+      totalOrders: '—',
+      canceledOrders: '—',
     });
 
     const statsPromise =
@@ -58,12 +62,16 @@ function StatsGrid() {
 
         const soldQuantity = Number(s?.soldQuantity ?? 0);
         const soldRevenue = Number(s?.soldRevenue ?? 0);
+        const totalOrders = Number(s?.totalOrders ?? 0);
+        const canceledOrders = Number(s?.canceledOrders ?? 0);
 
         const nf = new Intl.NumberFormat('ru-RU');
 
         setStats({
           soldProducts: nf.format(Number.isFinite(soldQuantity) ? soldQuantity : 0),
           earnedAmount: nf.format(Number.isFinite(soldRevenue) ? soldRevenue : 0),
+          totalOrders: nf.format(Number.isFinite(totalOrders) ? totalOrders : 0),
+          canceledOrders: nf.format(Number.isFinite(canceledOrders) ? canceledOrders : 0),
         });
       } catch (_) {
         // ignore for now (view-first app)
@@ -89,6 +97,14 @@ function StatsGrid() {
             <div className="main-page-skeleton main-page-skeleton--text main-page-statTitleSkeleton" />
             <div className="main-page-skeleton main-page-skeleton--text main-page-statValueSkeleton" />
           </div>
+          <div className="main-page-statCard main-page-statCard--skeleton" aria-hidden="true">
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statTitleSkeleton" />
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statValueSkeleton" />
+          </div>
+          <div className="main-page-statCard main-page-statCard--skeleton" aria-hidden="true">
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statTitleSkeleton" />
+            <div className="main-page-skeleton main-page-skeleton--text main-page-statValueSkeleton" />
+          </div>
         </>
       ) : (
         <>
@@ -99,6 +115,14 @@ function StatsGrid() {
           <div className="main-page-statCard">
             <div className="main-page-statTitle">Заработано</div>
             <div className="main-page-statValue">{stats?.earnedAmount ?? '—'}</div>
+          </div>
+          <div className="main-page-statCard">
+            <div className="main-page-statTitle">Всего заказов</div>
+            <div className="main-page-statValue">{stats?.totalOrders ?? '—'}</div>
+          </div>
+          <div className="main-page-statCard">
+            <div className="main-page-statTitle">Отменено заказов</div>
+            <div className="main-page-statValue">{stats?.canceledOrders ?? '—'}</div>
           </div>
         </>
       )}
