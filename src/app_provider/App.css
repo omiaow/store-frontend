@@ -36,6 +36,17 @@ body {
   background-color: #f5f5f5;
 }
 
+/* 
+  Mobile keyboard fix:
+  On iOS/Telegram WebView, fixed bottom bars can jump above the soft keyboard.
+  We intentionally hide fixed footers while keyboard is open so actions stay
+  below the keyboard (off-screen).
+*/
+html.provider-keyboard-open .shop-create-footer,
+html.provider-keyboard-open .main-page-footer {
+  display: none;
+}
+
 #root {
   height: 100vh;
   height: 100dvh;

@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import MainPage from './main_page/MainPage';
 import CreateShop from './shop/CreateShop';
 import BranchSettings from './shop/BranchSettings';
-import CreateProduct from './product/CreateProduct';
+import UpsertProduct from './product/UpsertProduct';
 import UpdateShop from './shop/UpdateShop';
 
 export default function ProviderRoutes() {
@@ -20,7 +20,8 @@ export default function ProviderRoutes() {
             <Route path="shop/branch/create" element={<BranchSettings mode="create" />} />
             <Route path="shop/branch/:branchId/edit" element={<BranchSettings mode="edit" />} />
 
-            <Route path="product/create" element={<CreateProduct />} />
+            <Route path="product/create" element={<UpsertProduct />} />
+            <Route path="product/:productId/edit" element={<UpsertProduct />} />
 
             {/* fallback */}
             <Route path="*" element={<Navigate to="/provider/branch/store" replace />} />

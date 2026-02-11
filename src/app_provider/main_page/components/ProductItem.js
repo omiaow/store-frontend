@@ -1,39 +1,23 @@
 import React from 'react';
 import useHttp from '../../../hooks/http.hook';
+import { useNavigate } from 'react-router-dom';
 import {
   ConfirmReplenishModal,
   DeleteProductModal,
-  EditProductModal,
   ProductRow,
   ReplenishStockModal,
 } from './product_item_components';
 
 function ProductItem({ product, selectedBranchId, onUpdated, onDeleted }) {
   const { loading, requestWithMeta } = useHttp();
-  const [isEditOpen, setIsEditOpen] = React.useState(false);
+  const navigate = useNavigate();
   const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
   const [isReplenishOpen, setIsReplenishOpen] = React.useState(false);
   const [isReplenishConfirmOpen, setIsReplenishConfirmOpen] = React.useState(false);
-  const [editName, setEditName] = React.useState(product?.name ?? '');
-  const [editPrice, setEditPrice] = React.useState(
-    product?.price !== undefined && product?.price !== null ? String(product.price) : ''
-  );
-  const [editImageUrl, setEditImageUrl] = React.useState(product?.imageUrl ?? '');
-  const [editError, setEditError] = React.useState(null);
   const [deleteError, setDeleteError] = React.useState(null);
   const [stockCount, setStockCount] = React.useState(null);
   const [replenishQuantity, setReplenishQuantity] = React.useState('');
   const [replenishError, setReplenishError] = React.useState(null);
-
-  React.useEffect(() => {
-    if (!isEditOpen) return;
-    setEditName(product?.name ?? '');
-    setEditPrice(
-      product?.price !== undefined && product?.price !== null ? String(product.price) : ''
-    );
-    setEditImageUrl(product?.imageUrl ?? '');
-    setEditError(null);
-  }, [isEditOpen, product]);
 
   React.useEffect(() => {
     if (!isDeleteOpen) return;
@@ -63,38 +47,10 @@ function ProductItem({ product, selectedBranchId, onUpdated, onDeleted }) {
     loadStock();
   }, [isReplenishOpen, product, requestWithMeta, selectedBranchId]);
 
-  async function handleSave() {
-    setEditError(null);
+  function handleEdit() {
     const productId = product?._id ?? product?.id;
-    if (!productId) {
-      setEditError('Не найден идентификатор товара');
-      return;
-    }
-
-    const priceNumber = Number(String(editPrice).replace(',', '.').trim());
-    if (!Number.isFinite(priceNumber) || priceNumber < 0) {
-      setEditError('Цена должна быть числом >= 0');
-      return;
-    }
-
-    const res = await requestWithMeta('/operator/products', 'PUT', {
-      productId,
-      name: String(editName ?? '').trim(),
-      price: priceNumber,
-      imageUrl: String(editImageUrl ?? '').trim() || null,
-    });
-
-    if (!res?.ok) {
-      setEditError(res?.data?.error || res?.data?.message || 'Не удалось обновить товар');
-      return;
-    }
-
-    const updated = res?.data?.product
-      ? { ...res.data.product, _id: res.data.product.id, id: res.data.product.id }
-      : null;
-
-    if (updated) onUpdated?.(updated);
-    setIsEditOpen(false);
+    if (!productId) return;
+    navigate(`/provider/product/${productId}/edit`, { state: { product } });
   }
 
   async function handleConfirmDelete() {
@@ -151,22 +107,8 @@ function ProductItem({ product, selectedBranchId, onUpdated, onDeleted }) {
         product={product}
         selectedBranchId={selectedBranchId}
         onReplenish={() => setIsReplenishOpen(true)}
-        onEdit={() => setIsEditOpen(true)}
+        onEdit={handleEdit}
         onDelete={() => setIsDeleteOpen(true)}
-      />
-
-      <EditProductModal
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        editError={editError}
-        editName={editName}
-        setEditName={setEditName}
-        editPrice={editPrice}
-        setEditPrice={setEditPrice}
-        editImageUrl={editImageUrl}
-        setEditImageUrl={setEditImageUrl}
-        loading={loading}
-        onSave={handleSave}
       />
 
       <DeleteProductModal
