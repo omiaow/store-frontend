@@ -79,8 +79,8 @@ function UpdateShop({ initialShop }) {
 
             <div className="shop-create-mobile">
                 <CreateShopHeader
-                    title="Обновить магазин"
-                    subtitle="Измените данные магазина и сохраните"
+                    title="Ваш магазин"
+                    subtitle="Укажите данные вашего магазина"
                     onBack={() => navigate('/provider/branch/store')}
                 />
 

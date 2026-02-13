@@ -28,10 +28,10 @@ export default function ShopDetailsForm({
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="shop-custom">
-                    Короткое название (обязательно)
+                    Логин (обязательно)
                 </label>
                 <div className="shop-create-help">
-                    Используется как логин вашего магазина
+                    На английском, без пробелов
                 </div>
                 <input
                     id="shop-custom"

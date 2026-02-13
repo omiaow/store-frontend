@@ -9,7 +9,6 @@ function MainPageHeader({
   isBranchPickerDisabled = false,
   onSelectBranchName,
   onEditClick,
-  onCreateBranchClick,
 }) {
   return (
     <header className="main-page-header">
@@ -57,34 +56,6 @@ function MainPageHeader({
             </svg>
           </button>
 
-          <button
-            type="button"
-            className="main-page-iconButton main-page-iconButton--lg"
-            onClick={onCreateBranchClick}
-            aria-label="Создать филиал"
-            title="Создать филиал"
-          >
-            <svg
-              className="main-page-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 5V19"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M5 12H19"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
         </div>
       </div>
     </header>

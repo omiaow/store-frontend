@@ -37,6 +37,22 @@ function MainPage() {
 
   const selectedBranchName = selectedBranch?.name ?? null;
   const isBranchPickerDisabled = branches.length <= 1;
+  const hasTextValue = React.useCallback((value) => {
+    if (typeof value === 'string') return value.trim().length > 0;
+    return value !== undefined && value !== null;
+  }, []);
+
+  const hasValidLocation = React.useCallback((location) => {
+    if (!location || typeof location !== 'object') return false;
+    const lat = Number(location?.lat);
+    const lng = Number(location?.lng ?? location?.lon);
+    return Number.isFinite(lat) && Number.isFinite(lng);
+  }, []);
+
+  const hasNonEmptySchedule = React.useCallback((branch) => {
+    const schedule = branch?.schedule ?? branch?.chedule;
+    return Array.isArray(schedule) && schedule.length > 0;
+  }, []);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -57,7 +73,7 @@ function MainPage() {
         if (cancelled) return;
 
         if (branchesRes?.status === 404) {
-          navigate('/provider/shop/create', { replace: true });
+          navigate('/provider/shop/update', { replace: true });
           return;
         }
 
@@ -68,11 +84,30 @@ function MainPage() {
             : Array.isArray(data?.branches)
               ? data.branches
               : [];
+          const shop = data?.shop;
+
+          // If base shop profile is incomplete, force user to complete it first.
+          if (!hasTextValue(shop?.customName) || !hasTextValue(shop?.logoUrl)) {
+            navigate('/provider/shop/update', { replace: true });
+            return;
+          }
 
           const normalized = listRaw.map((b) => {
             const id = b?._id ?? b?.id;
             return { ...b, _id: id, id };
           });
+
+          const firstInvalidBranch = normalized.find((branch) => {
+            const missingLocation = !hasValidLocation(branch?.location);
+            const missingSchedule = !hasNonEmptySchedule(branch);
+            return missingLocation || missingSchedule;
+          });
+
+          if (firstInvalidBranch?._id || firstInvalidBranch?.id) {
+            const invalidBranchId = firstInvalidBranch?._id ?? firstInvalidBranch?.id;
+            navigate(`/provider/shop/branch/${invalidBranchId}/edit`, { replace: true });
+            return;
+          }
 
           setBranches(normalized);
         }
@@ -84,7 +119,13 @@ function MainPage() {
     return () => {
       cancelled = true;
     };
-  }, [requestWithMeta, navigate]);
+  }, [
+    requestWithMeta,
+    navigate,
+    hasTextValue,
+    hasValidLocation,
+    hasNonEmptySchedule,
+  ]);
 
   React.useEffect(() => {
     // Navigation decisions based on already-fetched branches + current route.
@@ -130,7 +171,6 @@ function MainPage() {
               state: { branch: selectedBranch },
             });
           }}
-          onCreateBranchClick={() => navigate('/provider/shop/branch/create')}
         />
 
         <main className="main-page-content">

@@ -3,7 +3,6 @@ import './Shop.css';
 
 import DesktopOnlyBlock from './components/DesktopOnlyBlock';
 import CreateShopHeader from './components/CreateShopHeader';
-import TelegramChannelSection from './components/TelegramChannelSection';
 import LocationSection from './components/LocationSection';
 import ScheduleSection from './components/ScheduleSection';
 import CreateFooter from './components/CreateFooter';
@@ -18,7 +17,6 @@ function BranchSettings({ mode = 'edit' }) {
     const params = useParams();
     const { loading, requestWithMeta } = useHttp();
     const [name, setName] = useState('');
-    const [tgChannelId, setTgChannelId] = useState('');
 
     // Schedule format requested: [{ day: 1, open: "09:00", close: "17:00" }, ...]
     const [schedule, setSchedule] = useState(() => {
@@ -75,12 +73,11 @@ function BranchSettings({ mode = 'edit' }) {
 
         return {
             name,
-            tgChannelId: tgChannelId,
             schedule: schedulePayload,
             lat,
             lon,
         };
-    }, [name, tgChannelId, schedule, lat, lon]);
+    }, [name, schedule, lat, lon]);
 
     const currentScheduleDay = timeModal.day ? schedule.find((x) => x.day === timeModal.day) : null;
     const selectedHourValue =
@@ -108,7 +105,6 @@ function BranchSettings({ mode = 'edit' }) {
         const applyBranchToState = (b) => {
             if (!b) return;
             setName(b?.name ?? '');
-            setTgChannelId(b?.tgChannelId ?? b?.tgChannel_id ?? '');
             const loc = b?.location || {};
             if (loc?.lat !== undefined && loc?.lat !== null) setLat(loc.lat);
             if (loc?.lng !== undefined && loc?.lng !== null) setLon(loc.lng);
@@ -148,7 +144,7 @@ function BranchSettings({ mode = 'edit' }) {
                     subtitle={
                         isCreateMode
                             ? 'Укажите название, локацию и график'
-                            : 'Укажите Telegram-канал, локацию и график'
+                            : 'Укажите локацию и график'
                     }
                     onBack={() => navigate('/provider/branch/store')}
                 />
@@ -162,7 +158,7 @@ function BranchSettings({ mode = 'edit' }) {
                                         Настройки магазина
                                     </div>
                                     <div className="shop-create-help shop-create-helpStoreSettings">
-                                        Изменить название, логотип и короткое имя
+                                        Название, логотип и логин магазина
                                     </div>
                                 </div>
 
@@ -191,11 +187,6 @@ function BranchSettings({ mode = 'edit' }) {
                             autoComplete="off"
                         />
                     </section>
-
-                    <TelegramChannelSection
-                        tgChannelId={tgChannelId}
-                        onTgChannelIdChange={setTgChannelId}
-                    />
 
                     <LocationSection
                         lat={lat}

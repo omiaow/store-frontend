@@ -2,7 +2,6 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import MainPage from './main_page/MainPage';
-import CreateShop from './shop/CreateShop';
 import BranchSettings from './shop/BranchSettings';
 import UpsertProduct from './product/UpsertProduct';
 import UpdateShop from './shop/UpdateShop';
@@ -16,7 +15,6 @@ export default function ProviderRoutes() {
             <Route path="branch/:branchId" element={<MainPage />} />
             <Route path="branch/:branchId/replenish" element={<ReplenishPage />} />
 
-            <Route path="shop/create" element={<CreateShop />} />
             <Route path="shop/update" element={<UpdateShop />} />
             <Route path="shop/branch-settings" element={<BranchSettings />} />
             <Route path="shop/branch/create" element={<BranchSettings mode="create" />} />
