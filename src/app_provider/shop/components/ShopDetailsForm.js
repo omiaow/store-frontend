@@ -8,6 +8,7 @@ export default function ShopDetailsForm({
     onCustomNameChange,
     logoUrl,
     onLogoUrlChange,
+    onLogoUploadLoadingChange,
 }) {
     return (
         <>
@@ -47,6 +48,7 @@ export default function ShopDetailsForm({
                 help="Выберите изображение — ссылка подставится автоматически"
                 value={logoUrl}
                 onChange={onLogoUrlChange}
+                onUploadLoadingChange={onLogoUploadLoadingChange}
             />
         </>
     );

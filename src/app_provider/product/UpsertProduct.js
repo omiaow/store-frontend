@@ -22,6 +22,7 @@ function UpsertProduct({ onSaved }) {
     const [price, setPrice] = useState('');
     const [submitError, setSubmitError] = useState(null);
     const [isPrefillLoading, setIsPrefillLoading] = useState(false);
+    const [isImageUploading, setIsImageUploading] = useState(false);
 
     const { loading, requestWithMeta } = useHttp();
 
@@ -108,6 +109,7 @@ function UpsertProduct({ onSaved }) {
 
     const isSubmitDisabled =
         loading ||
+        isImageUploading ||
         isPrefillLoading ||
         name.trim().length === 0 ||
         !Number.isFinite(parsedPrice) ||
@@ -186,6 +188,7 @@ function UpsertProduct({ onSaved }) {
                         onNameChange={setName}
                         imageUrl={imageUrl}
                         onImageUrlChange={setImageUrl}
+                        onImageUploadLoadingChange={setIsImageUploading}
                         price={price}
                         onPriceChange={setPrice}
                     />

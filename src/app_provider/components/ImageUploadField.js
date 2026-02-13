@@ -6,6 +6,7 @@ export default function ImageUploadField({
     help,
     value,
     onChange,
+    onUploadLoadingChange,
     uploadPath = '/images',
     fieldName = 'image',
     accept = 'image/*',
@@ -18,6 +19,13 @@ export default function ImageUploadField({
     const url = String(value ?? '').trim();
 
     const maxBytes = useMemo(() => maxSizeMb * 1024 * 1024, [maxSizeMb]);
+
+    React.useEffect(() => {
+        onUploadLoadingChange?.(loading);
+        return () => {
+            onUploadLoadingChange?.(false);
+        };
+    }, [loading, onUploadLoadingChange]);
 
     async function uploadFile(file) {
         setError(null);

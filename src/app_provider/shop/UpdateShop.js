@@ -21,6 +21,7 @@ function UpdateShop({ initialShop }) {
     const [logoUrl, setLogoUrl] = useState(initial?.logoUrl ?? '');
     const [error, setError] = useState(null);
     const [prefillLoading, setPrefillLoading] = useState(false);
+    const [isLogoUploading, setIsLogoUploading] = useState(false);
 
     useEffect(() => {
         // Instant prefill from navigation state/prop (if present),
@@ -69,7 +70,8 @@ function UpdateShop({ initialShop }) {
         };
     }, [name, customName, logoUrl]);
 
-    const isSaveDisabled = loading || prefillLoading || String(name ?? '').trim().length === 0;
+    const isSaveDisabled =
+        loading || isLogoUploading || prefillLoading || String(name ?? '').trim().length === 0;
 
     return (
         <div className="shop-create-root">
@@ -118,6 +120,7 @@ function UpdateShop({ initialShop }) {
                             onCustomNameChange={setCustomName}
                             logoUrl={logoUrl}
                             onLogoUrlChange={setLogoUrl}
+                            onLogoUploadLoadingChange={setIsLogoUploading}
                         />
                     )}
                 </main>

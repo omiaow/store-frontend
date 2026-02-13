@@ -19,6 +19,7 @@ function CreateShop({ onCreated }) {
     const [name, setName] = useState('');
     const [customName, setCustomName] = useState('');
     const [logoUrl, setLogoUrl] = useState('');
+    const [isLogoUploading, setIsLogoUploading] = useState(false);
     const [tgChannelId, setTgChannelId] = useState('');
 
     // Schedule format requested: [{ day: 1, open: "09:00", close: "17:00" }, ...]
@@ -87,7 +88,7 @@ function CreateShop({ onCreated }) {
         );
     }
 
-    const isCreateDisabled = name.trim().length === 0;
+    const isCreateDisabled = name.trim().length === 0 || isLogoUploading;
     const currentScheduleDay = timeModal.day
         ? schedule.find((x) => x.day === timeModal.day)
         : null;
@@ -117,6 +118,7 @@ function CreateShop({ onCreated }) {
                         onCustomNameChange={setCustomName}
                         logoUrl={logoUrl}
                         onLogoUrlChange={setLogoUrl}
+                        onLogoUploadLoadingChange={setIsLogoUploading}
                     />
 
                     <TelegramChannelSection

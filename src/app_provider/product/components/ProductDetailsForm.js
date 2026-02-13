@@ -6,6 +6,7 @@ export default function ProductDetailsForm({
     onNameChange,
     imageUrl,
     onImageUrlChange,
+    onImageUploadLoadingChange,
     price,
     onPriceChange,
 }) {
@@ -30,6 +31,7 @@ export default function ProductDetailsForm({
                 help="Выберите изображение — ссылка подставится автоматически"
                 value={imageUrl}
                 onChange={onImageUrlChange}
+                onUploadLoadingChange={onImageUploadLoadingChange}
             />
 
             <section className="shop-create-section">
