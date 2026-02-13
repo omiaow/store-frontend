@@ -36,6 +36,29 @@
   background: rgba(255, 255, 255, 0.8);
 }
 
+.replenish-page-item--skeleton {
+  pointer-events: none;
+}
+
+.replenish-page-skeletonImage {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.replenish-page-skeletonName {
+  width: 78%;
+  height: 14px;
+  border-radius: 999px;
+}
+
+.replenish-page-skeletonInput {
+  width: 100%;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
 .replenish-page-image {
   width: 44px;
   height: 44px;
@@ -52,12 +75,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.replenish-page-checkbox {
-  width: 18px;
-  height: 18px;
-  accent-color: #3a6df0;
 }
 
 .replenish-page-qtyInput {

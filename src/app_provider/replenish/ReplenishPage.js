@@ -77,6 +77,7 @@ function ReplenishPage() {
       return Number.isFinite(parsed) && parsed > 0;
     }).length;
   }, [quantityById]);
+  const skeletonItems = React.useMemo(() => Array.from({ length: 4 }, (_, i) => i), []);
 
   const isSubmitDisabled = loading || productsLoading || selectedCount === 0;
 
@@ -148,7 +149,13 @@ function ReplenishPage() {
 
             <div className="replenish-page-list">
               {productsLoading ? (
-                <div className="shop-create-help">Загружаем список товаров…</div>
+                skeletonItems.map((item) => (
+                  <div key={item} className="replenish-page-item replenish-page-item--skeleton">
+                    <div className="shop-create-skeleton replenish-page-skeletonImage" />
+                    <div className="shop-create-skeleton shop-create-skeleton--text replenish-page-skeletonName" />
+                    <div className="shop-create-skeleton replenish-page-skeletonInput" />
+                  </div>
+                ))
               ) : products.length === 0 ? (
                 <div className="shop-create-help">Товары не найдены.</div>
               ) : (
