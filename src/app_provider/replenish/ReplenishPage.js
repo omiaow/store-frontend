@@ -111,14 +111,7 @@ function ReplenishPage() {
     }
 
     setSubmitSuccess('Пополнение успешно отправлено');
-    setQuantityById((prev) => {
-      const next = {};
-      Object.keys(prev).forEach((id) => {
-        next[id] = '';
-      });
-      return next;
-    });
-    fetchProducts();
+    navigate(`/provider/branch/${branchId}`, { replace: true });
   }
 
   return (
