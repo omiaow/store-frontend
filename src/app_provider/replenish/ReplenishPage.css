@@ -27,7 +27,7 @@
 
 .replenish-page-item {
   display: grid;
-  grid-template-columns: 44px 1fr 22px 86px;
+  grid-template-columns: 44px 1fr 96px;
   align-items: center;
   gap: 10px;
   padding: 10px;

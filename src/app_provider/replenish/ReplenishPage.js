@@ -15,7 +15,7 @@ function ReplenishPage() {
   const [productsLoading, setProductsLoading] = React.useState(true);
   const [submitError, setSubmitError] = React.useState(null);
   const [submitSuccess, setSubmitSuccess] = React.useState(null);
-  const [selectionById, setSelectionById] = React.useState({});
+  const [quantityById, setQuantityById] = React.useState({});
 
   const fetchProducts = React.useCallback(async () => {
     if (!branchId) return;
@@ -49,12 +49,12 @@ function ReplenishPage() {
       });
 
       setProducts(normalized);
-      setSelectionById((prev) => {
+      setQuantityById((prev) => {
         const next = {};
         normalized.forEach((p) => {
           const id = p?._id ?? p?.id;
           if (!id) return;
-          next[id] = prev[id] || { checked: false, quantity: '' };
+          next[id] = prev[id] ?? '';
         });
         return next;
       });
@@ -72,8 +72,11 @@ function ReplenishPage() {
   }, [branchId, fetchProducts, navigate]);
 
   const selectedCount = React.useMemo(() => {
-    return Object.values(selectionById).filter((x) => x?.checked).length;
-  }, [selectionById]);
+    return Object.values(quantityById).filter((value) => {
+      const parsed = Number(String(value ?? '').replace(',', '.').trim());
+      return Number.isFinite(parsed) && parsed > 0;
+    }).length;
+  }, [quantityById]);
 
   const isSubmitDisabled = loading || productsLoading || selectedCount === 0;
 
@@ -84,25 +87,17 @@ function ReplenishPage() {
     const selectedPayload = products
       .map((p) => {
         const id = p?._id ?? p?.id;
-        const state = selectionById[id];
-        if (!id || !state?.checked) return null;
+        if (!id) return null;
 
-        const parsed = Number(String(state.quantity ?? '').replace(',', '.').trim());
-        if (!Number.isFinite(parsed) || parsed <= 0) {
-          return { invalid: true };
-        }
+        const parsed = Number(String(quantityById[id] ?? '').replace(',', '.').trim());
+        if (!Number.isFinite(parsed) || parsed <= 0) return null;
 
         return { productId: id, quantity: parsed };
       })
       .filter(Boolean);
 
     if (selectedPayload.length === 0) {
-      setSubmitError('Выберите хотя бы один товар');
-      return;
-    }
-
-    if (selectedPayload.some((x) => x.invalid)) {
-      setSubmitError('Количество должно быть числом больше 0 для всех отмеченных товаров');
+      setSubmitError('Укажите количество больше 0 хотя бы для одного товара');
       return;
     }
 
@@ -116,10 +111,10 @@ function ReplenishPage() {
     }
 
     setSubmitSuccess('Пополнение успешно отправлено');
-    setSelectionById((prev) => {
+    setQuantityById((prev) => {
       const next = {};
       Object.keys(prev).forEach((id) => {
-        next[id] = { checked: false, quantity: '' };
+        next[id] = '';
       });
       return next;
     });
@@ -131,7 +126,7 @@ function ReplenishPage() {
       <div className="shop-create-mobile">
         <CreateShopHeader
           title="Пополнение товаров"
-          subtitle="Выберите товары и укажите количество"
+          subtitle="Укажите количество для нужных товаров"
           onBack={() => navigate(`/provider/branch/${branchId}`)}
         />
 
@@ -166,10 +161,7 @@ function ReplenishPage() {
               ) : (
                 products.map((product) => {
                   const productId = product?._id ?? product?.id;
-                  const selection = selectionById[productId] || {
-                    checked: false,
-                    quantity: '',
-                  };
+                  const quantity = quantityById[productId] ?? '';
 
                   return (
                     <label key={productId} className="replenish-page-item">
@@ -183,41 +175,20 @@ function ReplenishPage() {
                       <div className="replenish-page-name">{product?.name || 'Без названия'}</div>
 
                       <input
-                        type="checkbox"
-                        checked={!!selection.checked}
-                        onChange={(e) => {
-                          const checked = e.target.checked;
-                          setSelectionById((prev) => ({
-                            ...prev,
-                            [productId]: {
-                              ...(prev[productId] || { quantity: '' }),
-                              checked,
-                            },
-                          }));
-                        }}
-                        className="replenish-page-checkbox"
-                        aria-label={`Выбрать ${product?.name || 'товар'}`}
-                      />
-
-                      <input
                         type="number"
                         min="0"
                         step="1"
                         inputMode="numeric"
                         className="replenish-page-qtyInput"
-                        value={selection.quantity}
+                        value={quantity}
                         onChange={(e) => {
-                          const quantity = e.target.value;
-                          setSelectionById((prev) => ({
+                          const nextValue = e.target.value;
+                          setQuantityById((prev) => ({
                             ...prev,
-                            [productId]: {
-                              ...(prev[productId] || { checked: false }),
-                              quantity,
-                            },
+                            [productId]: nextValue,
                           }));
                         }}
                         placeholder="0"
-                        disabled={!selection.checked}
                         aria-label={`Количество для ${product?.name || 'товара'}`}
                       />
                     </label>
@@ -230,7 +201,7 @@ function ReplenishPage() {
 
         <CreateFooter
           disabled={isSubmitDisabled}
-          label={loading ? 'Отправка…' : 'Пополнить выбранные'}
+          label={loading ? 'Отправка…' : 'Пополнить'}
           onCreate={handleSubmit}
         />
       </div>
