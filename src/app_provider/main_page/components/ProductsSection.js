@@ -48,7 +48,8 @@ function ProductsSection({
           <div className="main-page-sectionHeader">
             <div className="main-page-sectionTitle">Продукты</div>
             <div className="main-page-sectionSub">
-              <span>{products.length ? `${products.length} продуктов` : 'Нет продуктов'}</span>
+              {!selectedBranchId ?
+                <span>{products.length ? `${products.length} продуктов` : 'Нет продуктов'}</span> : null}
               {selectedBranchId ? (
                 <button
                   type="button"
