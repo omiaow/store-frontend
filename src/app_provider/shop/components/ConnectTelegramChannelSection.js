@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
 export default function ConnectTelegramChannelSection({ branchId, botUsername, onConfirm }) {
-    const [hasClickedConnect, setHasClickedConnect] = useState(false);
+    const [awaitingConfirm, setAwaitingConfirm] = useState(false);
     const [checking, setChecking] = useState(false);
-    const [status, setStatus] = useState(null); // null | { ok: boolean, message: string }
+    const [result, setResult] = useState(null); // null | { ok: boolean, message: string }
 
     const connectUrl = useMemo(() => {
         if (!branchId || !botUsername) return null;
@@ -16,9 +16,9 @@ export default function ConnectTelegramChannelSection({ branchId, botUsername, o
         <section className="shop-create-section">
             <div className="shop-create-row">
                 <div className="shop-create-rowGrow">
-                    <div className="shop-create-label shop-create-labelNoMargin">Telegram-канал</div>
+                    <div className="shop-create-label shop-create-labelNoMargin">Telegram Channel</div>
                     <div className="shop-create-help shop-create-helpStoreSettings">
-                        Подключите канал через бота
+                        Connect a Telegram channel to this branch
                     </div>
                 </div>
 
@@ -29,8 +29,8 @@ export default function ConnectTelegramChannelSection({ branchId, botUsername, o
                     onClick={() => {
                         if (!connectUrl) return;
                         window.open(connectUrl, '_blank', 'noopener,noreferrer');
-                        setHasClickedConnect(true);
-                        setStatus(null);
+                        setAwaitingConfirm(true);
+                        setResult(null);
                     }}
                 >
                     Connect Telegram Channel
@@ -39,17 +39,18 @@ export default function ConnectTelegramChannelSection({ branchId, botUsername, o
 
             {!botUsername ? (
                 <div className="shop-create-help" style={{ marginTop: 8 }}>
-                    Укажите <code>REACT_APP_TELEGRAM_BOT_USERNAME</code> в <code>frontend/.env</code>.
+                    Missing bot username. Set <code>REACT_APP_TELEGRAM_BOT_USERNAME</code> in{' '}
+                    <code>frontend/.env</code>.
                 </div>
             ) : null}
 
             {!branchId ? (
                 <div className="shop-create-help" style={{ marginTop: 8 }}>
-                    Сначала создайте филиал, чтобы получить ID.
+                    Create the branch first to generate <code>BRANCH_ID</code>.
                 </div>
             ) : null}
 
-            {hasClickedConnect ? (
+            {awaitingConfirm ? (
                 <div style={{ marginTop: 12 }}>
                     <div className="shop-create-help">
                         After adding the bot as administrator, click Confirm below.
@@ -58,41 +59,41 @@ export default function ConnectTelegramChannelSection({ branchId, botUsername, o
                     <div style={{ display: 'flex', gap: 10, marginTop: 10, alignItems: 'center' }}>
                         <button
                             type="button"
-                            className="shop-create-buttonPrimary"
+                            className="shop-create-buttonSecondary"
                             disabled={checking || !branchId}
                             onClick={async () => {
                                 if (!branchId) return;
                                 setChecking(true);
-                                setStatus(null);
+                                setResult(null);
                                 try {
-                                    const result = await onConfirm?.();
-                                    if (result?.connected) {
-                                        setStatus({ ok: true, message: 'Канал успешно подключен.' });
+                                    const res = await onConfirm?.();
+                                    if (res?.connected) {
+                                        setResult({ ok: true, message: 'Channel connected.' });
                                     } else {
-                                        setStatus({
+                                        setResult({
                                             ok: false,
-                                            message: 'Канал пока не подключен. Проверьте права администратора и повторите.',
+                                            message: 'Channel not connected yet. Please try again.',
                                         });
                                     }
                                 } catch (e) {
-                                    setStatus({
+                                    setResult({
                                         ok: false,
-                                        message: e?.message || 'Не удалось проверить подключение канала.',
+                                        message: e?.message || 'Failed to check channel connection.',
                                     });
                                 } finally {
                                     setChecking(false);
                                 }
                             }}
                         >
-                            {checking ? 'Проверка…' : 'Confirm'}
+                            {checking ? 'Checking…' : 'Confirm'}
                         </button>
 
-                        {status ? (
+                        {result ? (
                             <div
                                 className="shop-create-help"
-                                style={{ color: status.ok ? '#1f7a1f' : '#b00020' }}
+                                style={{ color: result.ok ? '#1f7a1f' : '#b00020' }}
                             >
-                                {status.message}
+                                {result.message}
                             </div>
                         ) : null}
                     </div>
