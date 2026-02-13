@@ -4,6 +4,7 @@ import './Shop.css';
 import DesktopOnlyBlock from './components/DesktopOnlyBlock';
 import CreateShopHeader from './components/CreateShopHeader';
 import TelegramChannelSection from './components/TelegramChannelSection';
+import ConnectTelegramChannelSection from './components/ConnectTelegramChannelSection';
 import LocationSection from './components/LocationSection';
 import ScheduleSection from './components/ScheduleSection';
 import CreateFooter from './components/CreateFooter';
@@ -19,6 +20,7 @@ function BranchSettings({ mode = 'edit' }) {
     const { loading, requestWithMeta } = useHttp();
     const [name, setName] = useState('');
     const [tgChannelId, setTgChannelId] = useState('');
+    const [createdBranchId, setCreatedBranchId] = useState(null);
 
     // Schedule format requested: [{ day: 1, open: "09:00", close: "17:00" }, ...]
     const [schedule, setSchedule] = useState(() => {
@@ -95,6 +97,9 @@ function BranchSettings({ mode = 'edit' }) {
     const isCreateMode = mode === 'create';
     const branchId =
         params.branchId || location?.state?.branch?._id || location?.state?.branch?.id || null;
+    const effectiveBranchId = branchId || createdBranchId;
+    const botUsername = process.env.REACT_APP_TELEGRAM_BOT_USERNAME || '';
+    const isNewBranchFlow = isCreateMode && !effectiveBranchId;
     const isSaveDisabled =
         loading ||
         name.trim().length === 0 ||
@@ -197,6 +202,30 @@ function BranchSettings({ mode = 'edit' }) {
                         onTgChannelIdChange={setTgChannelId}
                     />
 
+                    {isCreateMode ? (
+                        <ConnectTelegramChannelSection
+                            branchId={effectiveBranchId}
+                            botUsername={botUsername}
+                            onConfirm={async () => {
+                                if (!effectiveBranchId) return { connected: false };
+                                const res = await requestWithMeta(
+                                    `/operator/branch/${effectiveBranchId}`,
+                                    'GET'
+                                );
+                                const channelId =
+                                    res?.data?.branch?.tgChannelId ??
+                                    res?.data?.branch?.tgChannel_id ??
+                                    '';
+
+                                if (channelId) {
+                                    setTgChannelId(String(channelId));
+                                    return { connected: true, tgChannelId: String(channelId) };
+                                }
+                                return { connected: false };
+                            }}
+                        />
+                    ) : null}
+
                     <LocationSection
                         lat={lat}
                         lon={lon}
@@ -216,10 +245,14 @@ function BranchSettings({ mode = 'edit' }) {
                     label={
                         loading
                             ? isCreateMode
-                                ? 'Создание…'
+                                ? isNewBranchFlow
+                                    ? 'Создание…'
+                                    : 'Сохранение…'
                                 : 'Сохранение…'
                             : isCreateMode
-                              ? 'Создать'
+                              ? isNewBranchFlow
+                                  ? 'Создать'
+                                  : 'Сохранить'
                               : 'Сохранить'
                     }
                     onCreate={async () => {
@@ -227,15 +260,58 @@ function BranchSettings({ mode = 'edit' }) {
                         console.log('Branch payload:', payloadPreview);
 
                         if (isCreateMode) {
-                            const res = await requestWithMeta('/operator/branch', 'POST', payloadPreview);
+                            if (!isNewBranchFlow) {
+                                const updatePayload = { ...payloadPreview };
+                                if (
+                                    !updatePayload.tgChannelId ||
+                                    String(updatePayload.tgChannelId).trim() === ''
+                                ) {
+                                    delete updatePayload.tgChannelId;
+                                }
+                                const res = await requestWithMeta(
+                                    `/operator/branch/${effectiveBranchId}`,
+                                    'PUT',
+                                    updatePayload
+                                );
+                                if (res?.ok) {
+                                    navigate('/provider/branch/store', { replace: true });
+                                }
+                                return;
+                            }
+
+                            const createPayload = { ...payloadPreview };
+                            // allow creating branch without tgChannelId (Telegram can fill it later)
+                            if (!createPayload.tgChannelId || String(createPayload.tgChannelId).trim() === '') {
+                                delete createPayload.tgChannelId;
+                            }
+
+                            const res = await requestWithMeta(
+                                '/operator/branch',
+                                'POST',
+                                createPayload
+                            );
                             if (res?.ok) {
-                                navigate('/provider/branch/store', { replace: true });
+                                const newId = res?.data?.branch?.id ?? res?.data?.branch?._id ?? null;
+                                if (newId !== null && newId !== undefined) {
+                                    setCreatedBranchId(newId);
+                                }
                             }
                             return;
                         }
 
                         if (!branchId) return;
-                        const res = await requestWithMeta(`/operator/branch/${branchId}`, 'PUT', payloadPreview);
+                        const updatePayload = { ...payloadPreview };
+                        if (
+                            !updatePayload.tgChannelId ||
+                            String(updatePayload.tgChannelId).trim() === ''
+                        ) {
+                            delete updatePayload.tgChannelId;
+                        }
+                        const res = await requestWithMeta(
+                            `/operator/branch/${branchId}`,
+                            'PUT',
+                            updatePayload
+                        );
                         if (res?.ok) {
                             navigate('/provider/branch/store', { replace: true });
                         }
