@@ -211,6 +211,11 @@ function MainPage() {
           <ProductsSection
             products={products}
             loading={productsLoading}
+            selectedBranchId={selectedBranchId}
+            onOpenReplenish={() => {
+              if (!selectedBranchId) return;
+              navigate(`/provider/branch/${selectedBranchId}/replenish`);
+            }}
             onProductDeleted={handleProductDeleted}
           />
         </main>

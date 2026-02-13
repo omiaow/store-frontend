@@ -5,6 +5,8 @@ function ProductsSection({
   products = [],
   loading = false,
   skeletonCount = 4,
+  selectedBranchId = null,
+  onOpenReplenish,
   onProductDeleted,
 }) {
   const skeletonItems = React.useMemo(
@@ -46,7 +48,16 @@ function ProductsSection({
           <div className="main-page-sectionHeader">
             <div className="main-page-sectionTitle">Продукты</div>
             <div className="main-page-sectionSub">
-              {products.length ? `${products.length} продуктов` : 'Нет продуктов'}
+              <span>{products.length ? `${products.length} продуктов` : 'Нет продуктов'}</span>
+              {selectedBranchId ? (
+                <button
+                  type="button"
+                  className="main-page-sectionSubButton"
+                  onClick={onOpenReplenish}
+                >
+                  Пополнить
+                </button>
+              ) : null}
             </div>
           </div>
 

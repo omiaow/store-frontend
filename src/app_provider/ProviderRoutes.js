@@ -6,6 +6,7 @@ import CreateShop from './shop/CreateShop';
 import BranchSettings from './shop/BranchSettings';
 import UpsertProduct from './product/UpsertProduct';
 import UpdateShop from './shop/UpdateShop';
+import ReplenishPage from './replenish/ReplenishPage';
 
 export default function ProviderRoutes() {
     return (
@@ -13,6 +14,7 @@ export default function ProviderRoutes() {
             <Route index element={<Navigate to="/provider/branch/store" replace />} />
             <Route path="branch" element={<Navigate to="/provider/branch/store" replace />} />
             <Route path="branch/:branchId" element={<MainPage />} />
+            <Route path="branch/:branchId/replenish" element={<ReplenishPage />} />
 
             <Route path="shop/create" element={<CreateShop />} />
             <Route path="shop/update" element={<UpdateShop />} />
