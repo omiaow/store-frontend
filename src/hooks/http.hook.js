@@ -15,7 +15,10 @@ const useHttp = () => {
       try {
         const baseUrl = process.env.REACT_APP_SERVER || "";
 
-        if (body) {
+        const isFormData =
+          typeof FormData !== "undefined" && body instanceof FormData;
+
+        if (body && !isFormData) {
           body = JSON.stringify(body);
           headers["Content-Type"] = "application/json";
         }
@@ -62,7 +65,10 @@ const useHttp = () => {
     try {
       const baseUrl = process.env.REACT_APP_SERVER || "";
 
-      if (body) {
+      const isFormData =
+        typeof FormData !== "undefined" && body instanceof FormData;
+
+      if (body && !isFormData) {
         body = JSON.stringify(body);
         headers["Content-Type"] = "application/json";
       }

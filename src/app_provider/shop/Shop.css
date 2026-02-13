@@ -441,6 +441,80 @@
   white-space: nowrap;
 }
 
+.shop-create-uploadRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shop-create-fileInput {
+  padding: 10px 10px;
+}
+
+.shop-create-fileInputHidden {
+  display: none;
+}
+
+.shop-create-uploadInline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shop-create-uploadButton {
+  height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-create-uploadThumbBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.70);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.shop-create-uploadThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.70);
+}
+
+.shop-create-uploadSpinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(15, 23, 42, 0.18);
+  border-top-color: rgba(58, 109, 240, 0.95);
+  animation: shopCreateUploadSpin 0.85s linear infinite;
+}
+
+@keyframes shopCreateUploadSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.shop-create-uploadError {
+  color: rgba(196, 48, 48, 0.85);
+}
+
+.shop-create-uploadUrlWrap {
+  margin-top: 10px;
+}
+
 /* Map overlay (almost full screen) */
 .shop-create-mapOverlay {
   position: fixed;

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import ImageUploadField from '../../components/ImageUploadField';
 
 export default function ShopDetailsForm({
     name,
@@ -8,12 +9,6 @@ export default function ShopDetailsForm({
     logoUrl,
     onLogoUrlChange,
 }) {
-    const [isPreviewVisible, setIsPreviewVisible] = useState(true);
-
-    useEffect(() => {
-        setIsPreviewVisible(true);
-    }, [logoUrl]);
-
     return (
         <>
             <section className="shop-create-section">
@@ -47,39 +42,12 @@ export default function ShopDetailsForm({
                 />
             </section>
 
-            <section className="shop-create-section">
-                <label className="shop-create-label" htmlFor="shop-logo">
-                    Ссылка на логотип
-                </label>
-                <input
-                    id="shop-logo"
-                    className="shop-create-input"
-                    placeholder="https://..."
-                    value={logoUrl}
-                    onChange={(e) => onLogoUrlChange(e.target.value)}
-                    autoComplete="off"
-                    inputMode="url"
-                />
-                {logoUrl.trim() ? (
-                    <div className="shop-create-logoPreviewWrap">
-                        <img
-                            className={
-                                isPreviewVisible
-                                    ? 'shop-create-logoPreview'
-                                    : 'shop-create-logoPreview shop-create-logoPreviewHidden'
-                            }
-                            src={logoUrl}
-                            alt="предпросмотр логотипа"
-                            onError={(e) => {
-                                setIsPreviewVisible(false);
-                            }}
-                            onLoad={(e) => {
-                                setIsPreviewVisible(true);
-                            }}
-                        />
-                    </div>
-                ) : null}
-            </section>
+            <ImageUploadField
+                label="Логотип"
+                help="Выберите изображение — ссылка подставится автоматически"
+                value={logoUrl}
+                onChange={onLogoUrlChange}
+            />
         </>
     );
 }

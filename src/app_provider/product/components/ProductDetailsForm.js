@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import ImageUploadField from '../../components/ImageUploadField';
 
 export default function ProductDetailsForm({
     name,
@@ -8,12 +9,6 @@ export default function ProductDetailsForm({
     price,
     onPriceChange,
 }) {
-    const [isPreviewVisible, setIsPreviewVisible] = useState(true);
-
-    useEffect(() => {
-        setIsPreviewVisible(true);
-    }, [imageUrl]);
-
     return (
         <>
             <section className="shop-create-section">
@@ -30,39 +25,12 @@ export default function ProductDetailsForm({
                 />
             </section>
 
-            <section className="shop-create-section">
-                <label className="shop-create-label" htmlFor="product-image-url">
-                    Ссылка на изображение
-                </label>
-                <input
-                    id="product-image-url"
-                    className="shop-create-input"
-                    placeholder="https://..."
-                    value={imageUrl}
-                    onChange={(e) => onImageUrlChange(e.target.value)}
-                    autoComplete="off"
-                    inputMode="url"
-                />
-                {imageUrl.trim() ? (
-                    <div className="shop-create-logoPreviewWrap">
-                        <img
-                            className={
-                                isPreviewVisible
-                                    ? 'shop-create-logoPreview'
-                                    : 'shop-create-logoPreview shop-create-logoPreviewHidden'
-                            }
-                            src={imageUrl}
-                            alt="предпросмотр товара"
-                            onError={(e) => {
-                                setIsPreviewVisible(false);
-                            }}
-                            onLoad={(e) => {
-                                setIsPreviewVisible(true);
-                            }}
-                        />
-                    </div>
-                ) : null}
-            </section>
+            <ImageUploadField
+                label="Изображение"
+                help="Выберите изображение — ссылка подставится автоматически"
+                value={imageUrl}
+                onChange={onImageUrlChange}
+            />
 
             <section className="shop-create-section">
                 <label className="shop-create-label" htmlFor="product-price">
