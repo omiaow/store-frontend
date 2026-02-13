@@ -1,18 +1,90 @@
 import React from 'react';
 import ProductItem from './ProductItem';
+import useHttp from '../../../hooks/http.hook';
 
 function ProductsSection({
-  products = [],
-  loading = false,
   skeletonCount = 4,
   selectedBranchId = null,
   onOpenReplenish,
-  onProductDeleted,
 }) {
+  const { requestWithMeta } = useHttp();
+  const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const productsPromiseByKeyRef = React.useRef(new Map());
+  const lastRequestFnRef = React.useRef(null);
+
   const skeletonItems = React.useMemo(
     () => Array.from({ length: skeletonCount }, (_, i) => i),
     [skeletonCount]
   );
+
+  const handleProductDeleted = React.useCallback((deletedId) => {
+    if (!deletedId) return;
+    setProducts((prev) =>
+      prev.filter((p) => {
+        const pid = p?._id ?? p?.id;
+        return pid !== deletedId;
+      })
+    );
+  }, []);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    if (lastRequestFnRef.current !== requestWithMeta) {
+      lastRequestFnRef.current = requestWithMeta;
+      productsPromiseByKeyRef.current = new Map();
+    }
+
+    const key = selectedBranchId ? `branch:${selectedBranchId}` : 'all';
+    const endpoint = selectedBranchId
+      ? `/operator/products?branchId=${encodeURIComponent(selectedBranchId)}`
+      : '/operator/products';
+
+    setLoading(true);
+
+    const cachedPromise = productsPromiseByKeyRef.current.get(key);
+    const productsPromise = cachedPromise ?? requestWithMeta(endpoint, 'GET');
+    if (!cachedPromise) {
+      productsPromiseByKeyRef.current.set(key, productsPromise);
+    }
+
+    (async () => {
+      try {
+        const productsRes = await productsPromise;
+        if (cancelled) return;
+
+        if (productsRes?.ok) {
+          const data = productsRes?.data;
+          const listRaw = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.products)
+              ? data.products
+              : [];
+
+          const normalized = listRaw.map((p) => {
+            const id = p?._id ?? p?.id;
+            return {
+              ...p,
+              _id: id,
+              id,
+              imageUrl: p?.imageUrl ?? p?.image_url ?? null,
+            };
+          });
+
+          setProducts(normalized);
+        }
+      } catch (_) {
+        // ignore for now (view-first app)
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [requestWithMeta, selectedBranchId]);
 
   return (
     <section
@@ -70,7 +142,7 @@ function ProductsSection({
                 <ProductItem
                   key={p?._id ?? p?.id}
                   product={p}
-                  onDeleted={onProductDeleted}
+                  onDeleted={handleProductDeleted}
                 />
               ))
             )}
