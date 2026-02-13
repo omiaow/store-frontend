@@ -321,9 +321,32 @@
 .main-page-productMeta {
   font-size: 12px;
   color: rgba(15, 23, 42, 0.60);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.main-page-productQty {
+  font-weight: 800;
+}
+
+.main-page-productQty--red {
+  color: #dc2626;
+}
+
+.main-page-productQty--orange {
+  color: #ea580c;
+}
+
+.main-page-productQty--yellow {
+  color: #ca8a04;
+}
+
+.main-page-productQty--green {
+  color: #16a34a;
 }
 
 .main-page-productActions {

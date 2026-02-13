@@ -1,14 +1,19 @@
 import React from 'react';
 import IconButton from './IconButton';
-import { EditIcon, ReplenishIcon, TrashIcon } from './icons';
+import { EditIcon, TrashIcon } from './icons';
 
-export default function ProductRow({
-  product,
-  selectedBranchId,
-  onEdit,
-  onDelete,
-  onReplenish,
-}) {
+function getQuantityToneClass(quantity) {
+  if (!Number.isFinite(quantity) || quantity <= 0) return 'main-page-productQty--red';
+  if (quantity <= 5) return 'main-page-productQty--orange';
+  if (quantity <= 15) return 'main-page-productQty--yellow';
+  return 'main-page-productQty--green';
+}
+
+export default function ProductRow({ product, onEdit, onDelete }) {
+  const parsedQuantity = Number(product?.quantity);
+  const quantity = Number.isFinite(parsedQuantity) ? parsedQuantity : 0;
+  const quantityClassName = getQuantityToneClass(quantity);
+
   return (
     <div className="main-page-productItem">
       <img
@@ -20,16 +25,13 @@ export default function ProductRow({
 
       <div className="main-page-productMain">
         <div className="main-page-productName">{product.name}</div>
-        <div className="main-page-productMeta">{product.price} сом</div>
+        <div className="main-page-productMeta">
+          <span>{product.price} сом</span>
+          <span className={`main-page-productQty ${quantityClassName}`}>{quantity} шт.</span>
+        </div>
       </div>
 
       <div className="main-page-productActions">
-        {selectedBranchId ? (
-          <IconButton onClick={onReplenish} label="Пополнить" title="Пополнить">
-            <ReplenishIcon />
-          </IconButton>
-        ) : null}
-
         <IconButton onClick={onEdit} label="Редактировать" title="Редактировать">
           <EditIcon />
         </IconButton>

@@ -19,7 +19,7 @@ function MainPage() {
   // React 18 StrictMode runs effects twice in dev; dedupe in-flight requests
   // so we don't fire duplicate network calls and we still update state.
   const branchesPromiseRef = React.useRef(null);
-  const productsPromiseRef = React.useRef(null);
+  const productsPromiseByKeyRef = React.useRef(new Map());
   const lastRequestFnRef = React.useRef(null);
 
   const selectedBranchId =
@@ -41,30 +41,6 @@ function MainPage() {
   const selectedBranchName = selectedBranch?.name ?? null;
   const isBranchPickerDisabled = branches.length <= 1;
 
-  const handleProductUpdated = React.useCallback((updated) => {
-    const updatedId = updated?._id ?? updated?.id;
-    if (!updatedId) return;
-
-    setProducts((prev) =>
-      prev.map((p) => {
-        const pid = p?._id ?? p?.id;
-        if (pid !== updatedId) return p;
-        return {
-          ...p,
-          ...updated,
-          _id: updatedId,
-          id: updatedId,
-          imageUrl:
-            updated?.imageUrl ??
-            updated?.image_url ??
-            p?.imageUrl ??
-            p?.image_url ??
-            null,
-        };
-      })
-    );
-  }, []);
-
   const handleProductDeleted = React.useCallback((deletedId) => {
     if (!deletedId) return;
     setProducts((prev) =>
@@ -78,28 +54,19 @@ function MainPage() {
   React.useEffect(() => {
     let cancelled = false;
 
-    // If auth/token changes, requestWithMeta callback identity changes.
-    // In that case, clear cached promises so we refetch with new credentials.
     if (lastRequestFnRef.current !== requestWithMeta) {
       lastRequestFnRef.current = requestWithMeta;
       branchesPromiseRef.current = null;
-      productsPromiseRef.current = null;
+      productsPromiseByKeyRef.current = new Map();
     }
 
-    setProductsLoading(true);
     const branchesPromise =
       branchesPromiseRef.current ??
       (branchesPromiseRef.current = requestWithMeta('/operator/branches', 'GET'));
-    const productsPromise =
-      productsPromiseRef.current ??
-      (productsPromiseRef.current = requestWithMeta('/operator/products', 'GET'));
 
     (async () => {
       try {
-        const [branchesRes, productsRes] = await Promise.all([
-          branchesPromise,
-          productsPromise,
-        ]);
+        const branchesRes = await branchesPromise;
 
         if (cancelled) return;
 
@@ -123,6 +90,42 @@ function MainPage() {
 
           setBranches(normalized);
         }
+      } catch (_) {
+        // ignore for now (view-first app)
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [requestWithMeta, navigate]);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    if (lastRequestFnRef.current !== requestWithMeta) {
+      lastRequestFnRef.current = requestWithMeta;
+      branchesPromiseRef.current = null;
+      productsPromiseByKeyRef.current = new Map();
+    }
+
+    const key = selectedBranchId ? `branch:${selectedBranchId}` : 'all';
+    const endpoint = selectedBranchId
+      ? `/operator/products?branchId=${encodeURIComponent(selectedBranchId)}`
+      : '/operator/products';
+
+    setProductsLoading(true);
+
+    const cachedPromise = productsPromiseByKeyRef.current.get(key);
+    const productsPromise = cachedPromise ?? requestWithMeta(endpoint, 'GET');
+    if (!cachedPromise) {
+      productsPromiseByKeyRef.current.set(key, productsPromise);
+    }
+
+    (async () => {
+      try {
+        const productsRes = await productsPromise;
+        if (cancelled) return;
 
         if (productsRes?.ok) {
           const data = productsRes?.data;
@@ -154,7 +157,7 @@ function MainPage() {
     return () => {
       cancelled = true;
     };
-  }, [requestWithMeta, navigate]);
+  }, [requestWithMeta, selectedBranchId]);
 
   React.useEffect(() => {
     // Navigation decisions based on already-fetched branches + current route.
@@ -208,8 +211,6 @@ function MainPage() {
           <ProductsSection
             products={products}
             loading={productsLoading}
-            selectedBranchId={selectedBranchId}
-            onProductUpdated={handleProductUpdated}
             onProductDeleted={handleProductDeleted}
           />
         </main>

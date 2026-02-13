@@ -5,8 +5,6 @@ function ProductsSection({
   products = [],
   loading = false,
   skeletonCount = 4,
-  selectedBranchId,
-  onProductUpdated,
   onProductDeleted,
 }) {
   const skeletonItems = React.useMemo(
@@ -60,8 +58,6 @@ function ProductsSection({
                 <ProductItem
                   key={p?._id ?? p?.id}
                   product={p}
-                  selectedBranchId={selectedBranchId}
-                  onUpdated={onProductUpdated}
                   onDeleted={onProductDeleted}
                 />
               ))
