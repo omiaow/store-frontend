@@ -109,19 +109,19 @@ function StatsGrid() {
       ) : (
         <>
           <div className="main-page-statCard">
-            <div className="main-page-statTitle">Проданные товары</div>
+            <div className="main-page-statTitle">Продано</div>
             <div className="main-page-statValue">{stats?.soldProducts ?? '—'}</div>
           </div>
           <div className="main-page-statCard">
-            <div className="main-page-statTitle">Заработано</div>
+            <div className="main-page-statTitle">Денег на касса</div>
             <div className="main-page-statValue">{stats?.earnedAmount ?? '—'}</div>
           </div>
           <div className="main-page-statCard">
-            <div className="main-page-statTitle">Всего заказов</div>
+            <div className="main-page-statTitle">Заказы</div>
             <div className="main-page-statValue">{stats?.totalOrders ?? '—'}</div>
           </div>
           <div className="main-page-statCard">
-            <div className="main-page-statTitle">Отменено заказов</div>
+            <div className="main-page-statTitle">Отменено</div>
             <div className="main-page-statValue">{stats?.canceledOrders ?? '—'}</div>
           </div>
         </>
