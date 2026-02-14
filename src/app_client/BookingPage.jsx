@@ -65,10 +65,15 @@ function BookingPage() {
     }
   }, [canSubmit, cartItems, store, branchId, name, phone, description, requestWithMeta])
 
+  const goToMainPage = useCallback(() => {
+    if (!store) return
+    navigate(`/${encodeURIComponent(store)}`, { replace: true })
+  }, [navigate, store])
+
   return (
     <div className="client-booking-page">
       <div className="client-booking-header">
-        <button className="client-booking-back" type="button" onClick={() => navigate(-1)}>
+        <button className="client-booking-back" type="button" onClick={goToMainPage}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M15 18l-6-6 6-6"

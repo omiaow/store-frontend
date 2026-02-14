@@ -47,6 +47,7 @@ function BranchesPage() {
   const mapElRef = useRef(null)
   const leafletMapRef = useRef(null)
   const leafletMarkersRef = useRef(null)
+  const didAutoNavigateRef = useRef(false)
 
   const [branches, setBranches] = useState([])
   const [loading, setLoading] = useState(true)
@@ -141,6 +142,23 @@ function BranchesPage() {
   }, [store, productIds, requestWithMeta])
 
   useEffect(() => {
+    if (didAutoNavigateRef.current) return
+    if (loading || error) return
+    if (!Array.isArray(branches) || branches.length !== 1) return
+
+    const b = branches[0]
+    if (!branchHasEnough(b)) return
+    const bid = b?._id
+    if (!bid) return
+
+    didAutoNavigateRef.current = true
+    navigate(`/${encodeURIComponent(store)}/branches/${encodeURIComponent(bid)}/booking`, {
+      replace: true,
+      state: { cartItems },
+    })
+  }, [branches, branchHasEnough, cartItems, error, loading, navigate, store])
+
+  useEffect(() => {
     let cancelled = false
 
     async function initMap() {
@@ -227,6 +245,7 @@ function BranchesPage() {
         const bid = b?._id
         if (!bid) return
         navigate(`/${encodeURIComponent(store)}/branches/${encodeURIComponent(bid)}/booking`, {
+          replace: true,
           state: { cartItems },
         })
       })
