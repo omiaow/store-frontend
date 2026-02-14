@@ -34,18 +34,17 @@ function BranchSettings({ mode = 'edit' }) {
     const [timeModal, setTimeModal] = useState({
         open: false,
         day: null,
-        field: null, // "open" | "close"
     });
 
     const dayLabels = useMemo(
         () => ({
-            1: 'Пн',
-            2: 'Вт',
-            3: 'Ср',
-            4: 'Чт',
-            5: 'Пт',
-            6: 'Сб',
-            7: 'Вс',
+            1: 'Понедельник',
+            2: 'Вторник',
+            3: 'Среда',
+            4: 'Четверг',
+            5: 'Пятница',
+            6: 'Суббота',
+            7: 'Воскресенье',
         }),
         []
     );
@@ -58,12 +57,12 @@ function BranchSettings({ mode = 'edit' }) {
         setSchedule((prev) => prev.map((s) => (s.day === day ? { ...s, ...patch } : s)));
     }
 
-    function openTimeModal(day, field) {
-        setTimeModal({ open: true, day, field });
+    function openTimeModal(day) {
+        setTimeModal({ open: true, day });
     }
 
     function closeTimeModal() {
-        setTimeModal({ open: false, day: null, field: null });
+        setTimeModal({ open: false, day: null });
     }
 
     const payloadPreview = useMemo(() => {
@@ -80,13 +79,9 @@ function BranchSettings({ mode = 'edit' }) {
     }, [name, schedule, lat, lon]);
 
     const currentScheduleDay = timeModal.day ? schedule.find((x) => x.day === timeModal.day) : null;
-    const selectedHourValue =
-        currentScheduleDay && timeModal.field ? currentScheduleDay[timeModal.field] : null;
     const hourModalTitle =
-        timeModal.day && timeModal.field
-            ? `${dayLabels[timeModal.day]} ${
-                  timeModal.field === 'open' ? 'открытие' : 'закрытие'
-              }`
+        timeModal.day
+            ? `${dayLabels[timeModal.day]}: время работы`
             : 'Время';
 
     const isCreateMode = mode === 'create';
@@ -198,7 +193,7 @@ function BranchSettings({ mode = 'edit' }) {
                         schedule={schedule}
                         dayLabels={dayLabels}
                         onToggleDay={(day, enabled) => updateScheduleDay(day, { enabled })}
-                        onPickTime={(day, field) => openTimeModal(day, field)}
+                        onPickTime={(day) => openTimeModal(day)}
                     />
                 </main>
 
@@ -246,11 +241,12 @@ function BranchSettings({ mode = 'edit' }) {
                     isOpen={timeModal.open}
                     title={hourModalTitle}
                     hourOptions={hourOptions}
-                    selectedValue={selectedHourValue}
+                    selectedFrom={currentScheduleDay?.open || '09:00'}
+                    selectedTo={currentScheduleDay?.close || '17:00'}
                     onClose={closeTimeModal}
-                    onSelect={(t) => {
-                        if (!timeModal.day || !timeModal.field) return;
-                        updateScheduleDay(timeModal.day, { [timeModal.field]: t });
+                    onSave={({ open, close }) => {
+                        if (!timeModal.day) return;
+                        updateScheduleDay(timeModal.day, { open, close });
                         closeTimeModal();
                     }}
                 />

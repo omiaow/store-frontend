@@ -31,7 +31,6 @@ export default function ScheduleSection({
                             />
                             <span className="shop-create-dayText">
                                 {dayLabels[s.day]}{' '}
-                                <span className="shop-create-dayNum">({s.day})</span>
                             </span>
                         </label>
 
@@ -39,20 +38,9 @@ export default function ScheduleSection({
                             className="shop-create-timeButton"
                             type="button"
                             disabled={!s.enabled}
-                            onClick={() => onPickTime(s.day, 'open')}
+                            onClick={() => onPickTime(s.day)}
                         >
-                            {s.open}
-                        </button>
-
-                        <div className="shop-create-timeDash">—</div>
-
-                        <button
-                            className="shop-create-timeButton"
-                            type="button"
-                            disabled={!s.enabled}
-                            onClick={() => onPickTime(s.day, 'close')}
-                        >
-                            {s.close}
+                            {s.open} - {s.close}
                         </button>
                     </div>
                 ))}
