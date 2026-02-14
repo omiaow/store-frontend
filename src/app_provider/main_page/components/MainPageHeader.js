@@ -12,12 +12,12 @@ function MainPageHeader({
 }) {
   return (
     <header className="main-page-header">
-      <div className="main-page-headerLabel">Филиал</div>
+      {/* <div className="main-page-headerLabel">Филиал</div> */}
 
       <div className="main-page-headerRow">
         <div className="main-page-headerGrow">
           <BranchPicker
-            placeholder="Все"
+            placeholder="Все филиалы"
             branches={branches}
             selectedBranchName={selectedBranchName}
             onSelectBranchName={onSelectBranchName}
