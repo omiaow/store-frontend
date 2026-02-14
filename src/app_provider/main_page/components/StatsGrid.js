@@ -113,7 +113,7 @@ function StatsGrid() {
             <div className="main-page-statValue">{stats?.soldProducts ?? '—'}</div>
           </div>
           <div className="main-page-statCard">
-            <div className="main-page-statTitle">Денег на касса</div>
+            <div className="main-page-statTitle">Денег на кассе</div>
             <div className="main-page-statValue">{stats?.earnedAmount ?? '—'}</div>
           </div>
           <div className="main-page-statCard">
