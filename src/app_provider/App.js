@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import WebApp from '@twa-dev/sdk';
 import AuthContext from "../context/auth.context";
 import useAuth from "../hooks/auth.hook";
@@ -41,6 +41,10 @@ function App() {
     
     const { request } = useHttp();
     const didAuthRequest = useRef(false);
+    const authContextValue = useMemo(
+        () => ({ token, login, logout, isAuthenticated }),
+        [token, login, logout, isAuthenticated]
+    );
 
     useEffect(() => {
         // On mobile browsers/WebViews (incl. Telegram), `position: fixed` footers
@@ -171,7 +175,7 @@ function App() {
     let app;
     if (isAuthenticated) {
         app = (
-            <AuthContext.Provider value={{ token, login, logout, isAuthenticated }}>
+            <AuthContext.Provider value={authContextValue}>
                 <ProviderRoutes />
             </AuthContext.Provider>
         );

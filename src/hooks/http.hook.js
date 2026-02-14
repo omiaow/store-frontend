@@ -8,6 +8,8 @@ const useHttp = () => {
   const [error, setError] = useState(null);
 
   const auth = React.useContext(AuthContext);
+  const token = auth?.token ?? null;
+  const logout = auth?.logout;
 
   const requestWithMeta = useCallback(
     async (url, method = "GET", body = null, headers = {}) => {
@@ -24,8 +26,8 @@ const useHttp = () => {
         }
 
         // Add authorization header if token is available
-        if (auth && auth.token) {
-          headers["Authorization"] = `Bearer ${auth.token}`;
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
         }
 
         const response = await fetch(`${baseUrl}${url}`, {
@@ -46,7 +48,7 @@ const useHttp = () => {
         if (!response.ok) {
           setError(data?.message || "Something went wrong");
           if (response.status === 401) {
-            auth.logout();
+            if (typeof logout === "function") logout();
           }
         }
 
@@ -57,47 +59,60 @@ const useHttp = () => {
         throw e;
       }
     },
-    [auth]
+    [token, logout]
   );
 
-  const request = useCallback(async (url, method = "GET", body = null, headers = {}) => {
-    setLoading(true)
-    try {
-      const baseUrl = process.env.REACT_APP_SERVER || "";
+  const request = useCallback(
+    async (url, method = "GET", body = null, headers = {}) => {
+      setLoading(true);
+      try {
+        const baseUrl = process.env.REACT_APP_SERVER || "";
 
-      const isFormData =
-        typeof FormData !== "undefined" && body instanceof FormData;
+        const isFormData =
+          typeof FormData !== "undefined" && body instanceof FormData;
 
-      if (body && !isFormData) {
-        body = JSON.stringify(body);
-        headers["Content-Type"] = "application/json";
-      }
-
-      // Add authorization header if token is available
-      if (auth && auth.token) {
-        headers["Authorization"] = `Bearer ${auth.token}`;
-      }
-
-      const response = await fetch(`${baseUrl}${url}`, { method, body, headers });
-      const data = await response.json();
-
-      setLoading(false);
-
-      if (!response.ok) {
-        setError(data.message || "Something went wrong");
-        if (response.status === 401) {
-          auth.logout();
+        if (body && !isFormData) {
+          body = JSON.stringify(body);
+          headers["Content-Type"] = "application/json";
         }
-      } else {
+
+        // Add authorization header if token is available
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${baseUrl}${url}`, {
+          method,
+          body,
+          headers,
+        });
+
+        let data = null;
+        try {
+          data = await response.json();
+        } catch (_) {
+          data = null;
+        }
+
+        setLoading(false);
+
+        if (!response.ok) {
+          setError(data?.message || "Something went wrong");
+          if (response.status === 401) {
+            if (typeof logout === "function") logout();
+          }
+          return;
+        }
+
         return data;
+      } catch (e) {
+        setLoading(false);
+        setError(e.message);
+        throw e;
       }
-      
-    } catch (e) {
-      setLoading(false);
-      setError(e.message);
-      throw e;
-    }
-  }, [auth]);
+    },
+    [token, logout]
+  );
 
   const clearError = () => setError(null);
 
