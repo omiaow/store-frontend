@@ -1,6 +1,6 @@
 .customer-header {
   width: 100%;
-  padding: 32px 0px 10px 0px;
+  padding: 32px 20px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,31 +11,54 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.logo-frame {
+  width: 280px; /* same as desktop product card width */
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo-image {
-  height: 100px;
-  width: auto;
   object-fit: contain;
+  display: block;
+  max-width: 100%;
+}
+
+.logo-image--wide {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+}
+
+.logo-image--vertical {
+  width: auto;
+  height: auto;
+  max-height: 250px;
+  max-width: 100%;
+  border-radius: 18px;
 }
 
 .logo-skeleton {
-  height: 100px;
-  width: 150px;
+  width: 100%;
+  height: 120px;
   border-radius: 16px;
 }
 
 @media (max-width: 768px) {
   .customer-header {
-    padding: 20px 0px 5px 0px;
+    padding: 20px 16px 5px;
   }
-  
-  .logo-image {
-    height: 70px;
+
+  .logo-frame {
+    width: 100%;
+    max-width: 290px; /* matches mobile card max-width */
   }
 
   .logo-skeleton {
-    height: 70px;
-    width: 120px;
+    height: 100px;
   }
 }
