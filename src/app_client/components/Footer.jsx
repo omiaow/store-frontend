@@ -4,12 +4,10 @@ function Footer() {
   return (
     <footer className="customer-footer">
       <a 
-        href="https://www.google.com" 
-        target="_blank" 
-        rel="noopener noreferrer"
+        href="/"
         className="footer-link"
       >
-        Google
+        Quokka
       </a>
     </footer>
   )

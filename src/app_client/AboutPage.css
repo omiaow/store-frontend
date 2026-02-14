@@ -1,0 +1,70 @@
+.client-about {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #0b1220;
+}
+
+.client-about-card {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 20px;
+  color: #e5e7eb;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+.client-about-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2px 0 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 8px 10px;
+  object-fit: contain;
+}
+
+.client-about-text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+  color: rgba(229, 231, 235, 0.92);
+}
+
+.client-about-textMuted {
+  color: rgba(229, 231, 235, 0.7);
+}
+
+.client-about-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.client-about-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.client-about-cta:hover {
+  filter: brightness(1.05);
+}
+
+.client-about-cta:active {
+  transform: translateY(1px);
+}
+

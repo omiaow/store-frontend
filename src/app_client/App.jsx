@@ -91,6 +91,30 @@ function CustomerSide() {
     fetchStoreData()
   }, [store, requestWithMeta])
 
+  useEffect(() => {
+    if (!storeData) return
+
+    const shopName = String(storeData?.name || store || '').trim()
+    if (shopName) document.title = shopName
+
+    const logoUrl = storeData?.logoUrl
+    if (!logoUrl) return
+
+    const href = String(logoUrl).trim()
+    if (!href) return
+
+    // Prefer existing icons; otherwise create one.
+    const existing =
+      document.querySelector('link[rel="icon"]') ||
+      document.querySelector('link[rel="shortcut icon"]') ||
+      document.querySelector('link[rel~="icon"]')
+
+    const link = existing || document.createElement('link')
+    link.setAttribute('rel', 'icon')
+    link.setAttribute('href', href)
+    if (!existing) document.head.appendChild(link)
+  }, [store, storeData])
+
   const handleAddToCart = (product, buttonPosition) => {
     const key = String(product?.id ?? product?._id ?? product?.productId ?? product?.name ?? '')
     if (!key) return
